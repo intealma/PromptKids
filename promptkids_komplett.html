@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptKids – Lär barn att tala med AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0e0d0b; --paper: #f5f2eb; --cream: #ede9df;
+  --moss: #2d5a3d; --sage: #6a9e75; --sun: #e8c84a;
+  --rust: #c45e32; --sky: #4a7fa8; --lav: #8b7bb8;
+  --warm: #faf8f3;
+  --font-d: 'Fraunces', Georgia, serif;
+  --font-b: 'DM Sans', sans-serif;
+  --radius: 16px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-b); background: var(--paper); color: var(--ink); overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1rem 3rem;
+  background:rgba(245,242,235,0.92); backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(14,13,11,0.07);
+  transition: box-shadow 0.3s;
+}
+.nav-logo { font-family:var(--font-d); font-size:1.4rem; font-weight:900; color:var(--moss); letter-spacing:-0.02em; text-decoration:none; }
+.nav-logo span { color:var(--rust); }
+nav ul { list-style:none; display:flex; gap:2rem; }
+nav ul a { text-decoration:none; color:var(--ink); font-size:0.85rem; font-weight:400; letter-spacing:0.04em; text-transform:uppercase; opacity:0.65; transition:opacity 0.2s; }
+nav ul a:hover { opacity:1; }
+.nav-cta { background:var(--moss)!important; color:var(--warm)!important; padding:0.5rem 1.3rem!important; border-radius:100px; opacity:1!important; font-weight:500!important; transition:background 0.2s!important; }
+.nav-cta:hover { background:#1e3d29!important; }
+
+/* ── HERO ── */
+.hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; padding-top:70px; position:relative; overflow:hidden; }
+.hero-bg { position:absolute; top:-10%; right:-5%; width:60%; height:120%; background:var(--moss); border-radius:40% 0 0 50%; z-index:0; }
+.hero-left { position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; padding:4rem 3rem 4rem 5rem; }
+.eyebrow { font-size:0.75rem; font-weight:500; text-transform:uppercase; letter-spacing:0.12em; color:var(--rust); margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem; }
+.eyebrow::before { content:''; display:block; width:24px; height:2px; background:var(--rust); }
+h1 { font-family:var(--font-d); font-size:clamp(2.8rem,4.5vw,4.5rem); font-weight:900; line-height:1.0; letter-spacing:-0.03em; margin-bottom:1.2rem; }
+h1 em { font-style:italic; color:var(--moss); font-weight:300; }
+.hero-desc { font-size:1rem; line-height:1.65; color:rgba(14,13,11,0.6); max-width:420px; margin-bottom:2rem; font-weight:300; }
+.hero-btns { display:flex; gap:0.8rem; flex-wrap:wrap; }
+.btn-p { background:var(--rust); color:white; padding:0.8rem 1.8rem; border-radius:100px; font-family:var(--font-b); font-size:0.9rem; font-weight:500; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:transform 0.15s,background 0.2s; }
+.btn-p:hover { background:#a34d28; transform:translateY(-2px); }
+.btn-s { background:transparent; color:var(--ink); padding:0.8rem 1.8rem; border-radius:100px; font-family:var(--font-b); font-size:0.9rem; font-weight:400; border:1.5px solid rgba(14,13,11,0.22); cursor:pointer; text-decoration:none; display:inline-block; transition:border-color 0.2s,transform 0.15s; }
+.btn-s:hover { border-color:var(--ink); transform:translateY(-2px); }
+.hero-stats { display:flex; gap:2rem; margin-top:2.5rem; padding-top:2rem; border-top:1px solid rgba(14,13,11,0.1); }
+.stat-n { font-family:var(--font-d); font-size:1.8rem; font-weight:900; color:var(--moss); display:block; }
+.stat-l { font-size:0.72rem; color:rgba(14,13,11,0.45); text-transform:uppercase; letter-spacing:0.06em; }
+.hero-right { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; padding:3rem 2rem; }
+.card-stack { position:relative; width:300px; height:340px; }
+.qcard { position:absolute; background:var(--warm); border-radius:18px; padding:1.3rem; box-shadow:0 12px 36px rgba(0,0,0,0.13); width:260px; }
+.qcard:nth-child(1){top:0;left:0;--r:-4deg} .qcard:nth-child(2){top:55px;left:40px;--r:2deg} .qcard:nth-child(3){top:115px;left:15px;--r:-1deg}
+.qcard { animation:floatCard 4s ease-in-out infinite; transform:rotate(var(--r,0deg)); }
+.qcard:nth-child(2){animation-delay:0.7s} .qcard:nth-child(3){animation-delay:1.4s}
+@keyframes floatCard { 0%,100%{transform:translateY(0) rotate(var(--r,0deg))} 50%{transform:translateY(-7px) rotate(var(--r,0deg))} }
+.cbadge { display:inline-block; font-size:0.65rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; padding:0.2rem 0.65rem; border-radius:100px; margin-bottom:0.6rem; }
+.bg { background:#d4ead9; color:var(--moss); } .bs { background:#f5edbb; color:#7a6000; } .br { background:#f5ddd4; color:var(--rust); }
+.ctitle { font-family:var(--font-d); font-size:0.95rem; font-weight:700; margin-bottom:0.3rem; }
+.cdesc { font-size:0.75rem; color:rgba(14,13,11,0.5); line-height:1.4; }
+.cbar { margin-top:0.7rem; height:3px; background:#e0ddd5; border-radius:2px; overflow:hidden; }
+.cfill { height:100%; background:var(--moss); border-radius:2px; }
+
+/* ── TRUST ── */
+.trust { background:var(--cream); padding:1.5rem 4rem; display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap; border-top:1px solid rgba(14,13,11,0.07); border-bottom:1px solid rgba(14,13,11,0.07); }
+.trust-lbl { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(14,13,11,0.38); white-space:nowrap; }
+.trust-logos { display:flex; gap:2.5rem; flex-wrap:wrap; align-items:center; }
+.trust-logo { font-family:var(--font-d); font-size:1rem; font-weight:700; color:rgba(14,13,11,0.28); }
+
+/* ── SECTION SHARED ── */
+.sec { padding:5rem; }
+.sec-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; font-weight:500; color:var(--rust); margin-bottom:0.7rem; }
+h2 { font-family:var(--font-d); font-size:clamp(2rem,3vw,2.8rem); font-weight:900; line-height:1.1; letter-spacing:-0.025em; margin-bottom:0.8rem; }
+h2 em { font-style:italic; color:var(--moss); font-weight:300; }
+.sec-sub { font-size:0.95rem; color:rgba(14,13,11,0.58); line-height:1.65; font-weight:300; max-width:500px; }
+
+/* ── PLATFORM SECTION ── */
+.platform-sec { background:var(--moss); color:var(--warm); padding:0; }
+.platform-header { padding:4rem 5rem 2rem; }
+.platform-header .sec-label { color:var(--sun); }
+.platform-header h2 { color:var(--warm); }
+.platform-header h2 em { color:var(--sun); }
+.platform-header .sec-sub { color:rgba(245,242,235,0.6); }
+
+/* Tab navigation */
+.tab-nav { display:flex; gap:0; border-bottom:1px solid rgba(255,255,255,0.12); margin:0 5rem; }
+.tab-btn {
+  background:none; border:none; color:rgba(245,242,235,0.5); font-family:var(--font-b);
+  font-size:0.9rem; font-weight:400; padding:1rem 1.8rem; cursor:pointer;
+  border-bottom:2.5px solid transparent; margin-bottom:-1px;
+  transition:color 0.2s, border-color 0.2s;
+  display:flex; align-items:center; gap:0.5rem;
+}
+.tab-btn:hover { color:rgba(245,242,235,0.85); }
+.tab-btn.active { color:var(--warm); border-bottom-color:var(--sun); font-weight:500; }
+.tab-content { display:none; padding:2rem 5rem 4rem; }
+.tab-content.active { display:block; }
+
+/* ── MODULE 1 STYLES ── */
+.m1-grid { display:grid; grid-template-columns:260px 1fr; gap:1.5rem; }
+.quest-sidebar { background:rgba(255,255,255,0.06); border-radius:var(--radius); padding:1rem; display:flex; flex-direction:column; gap:0.5rem; }
+.q-item { border-radius:10px; padding:0.8rem; cursor:pointer; border:1.5px solid transparent; transition:all 0.15s; }
+.q-item:hover { background:rgba(255,255,255,0.08); }
+.q-item.active { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.2); }
+.q-item.done { opacity:0.55; }
+.qi-top { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.2rem; }
+.qi-num { font-size:0.6rem; font-weight:500; color:var(--sun); text-transform:uppercase; letter-spacing:0.08em; }
+.qi-chk { margin-left:auto; color:var(--sun); font-size:0.75rem; }
+.qi-t { font-size:0.82rem; font-weight:500; color:var(--warm); line-height:1.3; }
+.qi-d { font-size:0.65rem; margin-top:0.2rem; }
+.de { color:#88c099; } .dm { color:var(--sun); } .dh { color:#e8917a; }
+
+.quest-panel { display:flex; flex-direction:column; gap:1rem; }
+.qp-card { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.3rem; }
+.qp-badge { display:inline-block; font-size:0.65rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; padding:0.2rem 0.65rem; border-radius:100px; margin-bottom:0.7rem; }
+.qp-t { font-family:var(--font-d); font-size:1.2rem; font-weight:900; margin-bottom:0.4rem; color:var(--warm); }
+.qp-d { font-size:0.87rem; color:rgba(245,242,235,0.65); line-height:1.6; font-weight:300; margin-bottom:0.9rem; }
+.qp-tip { background:rgba(232,200,74,0.12); border-radius:9px; padding:0.6rem 0.9rem; font-size:0.78rem; color:rgba(232,200,74,0.9); line-height:1.45; }
+.prompt-wrap { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.2rem; display:flex; flex-direction:column; gap:0.8rem; }
+.prompt-ta {
+  width:100%; min-height:80px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px; padding:0.9rem; font-family:var(--font-b); font-size:0.9rem;
+  color:var(--warm); resize:vertical; outline:none; line-height:1.5;
+}
+.prompt-ta::placeholder { color:rgba(255,255,255,0.28); }
+.prompt-ta:focus { border-color:rgba(106,158,117,0.7); }
+.prompt-footer { display:flex; justify-content:space-between; align-items:center; }
+.char-c { font-size:0.7rem; color:rgba(255,255,255,0.3); }
+.send-btn {
+  background:var(--sun); color:#2a1f00; border:none; border-radius:100px;
+  padding:0.55rem 1.4rem; font-family:var(--font-b); font-size:0.85rem; font-weight:500;
+  cursor:pointer; transition:opacity 0.15s,transform 0.1s; display:flex; align-items:center; gap:0.4rem;
+}
+.send-btn:hover { opacity:0.85; } .send-btn:active { transform:scale(0.97); }
+.send-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+.ai-box { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); overflow:hidden; display:none; }
+.ai-box.vis { display:block; }
+.ai-hd { background:rgba(45,90,61,0.6); padding:0.6rem 1rem; font-size:0.75rem; font-weight:500; color:rgba(245,242,235,0.8); display:flex; align-items:center; gap:0.5rem; }
+.ai-bd { padding:1rem; font-size:0.88rem; line-height:1.65; color:rgba(245,242,235,0.85); font-weight:300; white-space:pre-wrap; }
+.typing { display:flex; gap:4px; }
+.typing span { width:5px; height:5px; border-radius:50%; background:var(--sage); animation:bonce 0.8s ease infinite; }
+.typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
+@keyframes bonce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+.fb-box { border-radius:var(--radius); padding:1.1rem 1.3rem; display:none; }
+.fb-box.vis { display:block; }
+.fb-great { background:rgba(45,90,61,0.35); border:1.5px solid rgba(106,158,117,0.5); }
+.fb-ok { background:rgba(232,200,74,0.15); border:1.5px solid rgba(232,200,74,0.4); }
+.fb-poor { background:rgba(196,94,50,0.2); border:1.5px solid rgba(196,94,50,0.4); }
+.fb-hd { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.5rem; }
+.fb-score { font-family:var(--font-d); font-size:1.8rem; font-weight:900; margin-left:auto; }
+.fb-title { font-size:0.9rem; font-weight:500; }
+.fb-txt { font-size:0.82rem; line-height:1.55; color:rgba(245,242,235,0.75); margin-bottom:0.7rem; }
+.fb-chips { display:flex; flex-wrap:wrap; gap:0.35rem; }
+.fb-chip { font-size:0.68rem; padding:0.15rem 0.6rem; border-radius:100px; font-weight:500; }
+.fcp { background:rgba(106,158,117,0.25); color:#88c099; }
+.fcf { background:rgba(196,94,50,0.25); color:#e8917a; }
+.next-btn { margin-top:0.8rem; background:var(--rust); color:white; border:none; border-radius:100px; padding:0.55rem 1.2rem; font-family:var(--font-b); font-size:0.82rem; font-weight:500; cursor:pointer; transition:background 0.15s; }
+.next-btn:hover { background:#a34d28; }
+
+/* ── MODULE 2 ── */
+.m2-wrap { display:flex; flex-direction:column; gap:1rem; max-width:700px; }
+.chal-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.ctab { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:0.4rem 1rem; font-size:0.78rem; color:rgba(245,242,235,0.65); font-family:var(--font-b); cursor:pointer; transition:all 0.15s; }
+.ctab:hover { background:rgba(255,255,255,0.15); }
+.ctab.active { background:var(--moss); border-color:var(--moss); color:white; }
+.chal-info { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.2rem; }
+.chal-ttl { font-family:var(--font-d); font-size:1rem; font-weight:700; color:var(--sun); margin-bottom:0.3rem; }
+.chal-txt { font-size:0.84rem; color:rgba(245,242,235,0.6); line-height:1.5; font-weight:300; }
+.versions-list { display:flex; flex-direction:column; gap:0.6rem; }
+.ver-entry { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; }
+.ver-entry.best { border-color:var(--sun); }
+.ver-hd { display:flex; align-items:center; gap:0.7rem; padding:0.65rem 1rem; cursor:pointer; }
+.ver-n { font-family:var(--font-d); font-size:0.78rem; font-weight:700; color:rgba(255,255,255,0.3); width:22px; }
+.ver-p { font-size:0.8rem; flex:1; color:rgba(255,255,255,0.65); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ver-s { font-family:var(--font-d); font-size:0.95rem; font-weight:900; }
+.sh{color:var(--sun)} .sm{color:#88c099} .sl{color:rgba(255,255,255,0.3)}
+.ver-best { font-size:0.62rem; background:var(--sun); color:#2a1f00; padding:0.12rem 0.5rem; border-radius:100px; font-weight:500; }
+.ver-detail { padding:0.7rem 1rem; display:none; border-top:1px solid rgba(255,255,255,0.06); }
+.ver-detail.open { display:block; }
+.ver-resp { font-size:0.8rem; line-height:1.55; color:rgba(245,242,235,0.55); margin-bottom:0.5rem; font-weight:300; }
+.ver-chips { display:flex; flex-wrap:wrap; gap:0.3rem; }
+.vc { font-size:0.65rem; padding:0.12rem 0.55rem; border-radius:100px; }
+.vcg { background:rgba(106,158,117,0.2); color:#88c099; }
+.vcb { background:rgba(196,94,50,0.2); color:#e8917a; }
+.iter-row { display:flex; gap:0.7rem; }
+.iter-ta { flex:1; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:0.75rem; font-family:var(--font-b); font-size:0.88rem; color:var(--warm); resize:none; min-height:65px; outline:none; line-height:1.5; }
+.iter-ta::placeholder{color:rgba(255,255,255,0.22)}
+.iter-ta:focus{border-color:rgba(106,158,117,0.6)}
+.iter-btn { background:var(--sage); color:white; border:none; border-radius:10px; width:44px; height:44px; font-size:1.1rem; cursor:pointer; transition:background 0.15s; display:flex; align-items:center; justify-content:center; flex-shrink:0; align-self:flex-end; }
+.iter-btn:hover{background:#4d7d59} .iter-btn:disabled{opacity:0.4;cursor:not-allowed}
+.iter-hint { font-size:0.72rem; color:rgba(255,255,255,0.28); }
+
+/* ── MODULE 3 ── */
+.m3-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+.m3-left { display:flex; flex-direction:column; gap:1rem; }
+.m3-right { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; min-height:400px; }
+.create-lbl { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:500; color:rgba(245,242,235,0.4); margin-bottom:0.5rem; }
+.ptype-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+.ptype-btn { border-radius:10px; padding:0.75rem; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.06); cursor:pointer; text-align:center; transition:all 0.15s; font-family:var(--font-b); }
+.ptype-btn:hover{border-color:rgba(255,255,255,0.25)} .ptype-btn.active{border-color:var(--sun);background:rgba(232,200,74,0.12)}
+.ptype-icon{font-size:1.2rem;display:block;margin-bottom:0.25rem}
+.ptype-lbl{font-size:0.75rem;font-weight:500;color:rgba(245,242,235,0.8)}
+.style-chips{display:flex;gap:0.4rem;flex-wrap:wrap}
+.schip{border-radius:100px;padding:0.28rem 0.75rem;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.06);font-size:0.72rem;cursor:pointer;font-family:var(--font-b);color:rgba(245,242,235,0.65);transition:all 0.15s}
+.schip:hover{border-color:rgba(255,255,255,0.3)} .schip.active{background:var(--moss);color:white;border-color:var(--moss)}
+.create-ta{width:100%;min-height:75px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:0.8rem;font-family:var(--font-b);font-size:0.87rem;color:var(--warm);resize:none;outline:none;line-height:1.5}
+.create-ta::placeholder{color:rgba(255,255,255,0.22)} .create-ta:focus{border-color:rgba(106,158,117,0.5)}
+.create-btn{background:var(--rust);color:white;border:none;border-radius:100px;padding:0.7rem 1.5rem;font-family:var(--font-b);font-size:0.88rem;font-weight:500;cursor:pointer;transition:background 0.15s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.create-btn:hover{background:#a34d28} .create-btn:disabled{opacity:0.4;cursor:not-allowed}
+.len-row{display:flex;justify-content:space-between;font-size:0.68rem;color:rgba(245,242,235,0.35);margin-top:0.2rem}
+
+.out-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0.25;text-align:center;gap:0.6rem;color:var(--warm);padding:2rem}
+.out-empty .big{font-size:2.5rem}
+.out-empty p{font-size:0.82rem;font-weight:300}
+.proj-out{display:none;flex-direction:column;flex:1}
+.proj-out.vis{display:flex}
+.pub-ribbon{background:rgba(45,90,61,0.8);color:var(--sun);text-align:center;padding:0.5rem;font-size:0.78rem;font-weight:500;display:none}
+.pub-ribbon.vis{display:block}
+.out-hd{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem;background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08)}
+.out-badge{font-size:0.65rem;padding:0.18rem 0.65rem;border-radius:100px;font-weight:500;margin-right:0.5rem}
+.out-title{font-family:var(--font-d);font-size:0.95rem;font-weight:700;color:var(--warm)}
+.out-acts{display:flex;gap:0.4rem}
+.oact{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:0.28rem 0.7rem;font-size:0.72rem;cursor:pointer;font-family:var(--font-b);color:rgba(245,242,235,0.75);transition:background 0.15s}
+.oact:hover{background:rgba(255,255,255,0.15)}
+.oact.pub{background:var(--sun);color:#2a1f00;border-color:var(--sun)}
+.oact.pub:hover{opacity:0.85}
+.out-content{flex:1;padding:1.2rem;font-size:0.87rem;line-height:1.75;color:rgba(245,242,235,0.85);overflow-y:auto;white-space:pre-wrap;font-weight:300}
+.out-content h1,.out-content h2,.out-content h3{font-family:var(--font-d);font-weight:700;margin-bottom:0.4rem;margin-top:0.8rem;color:var(--warm)}
+
+/* ── HOW SECTION ── */
+.how-sec{background:var(--cream)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.5rem}
+.step-card{background:var(--warm);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(14,13,11,0.07)}
+.step-n{font-family:var(--font-d);font-size:2.5rem;font-weight:900;color:rgba(14,13,11,0.08);line-height:1;margin-bottom:0.4rem}
+.step-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.step-card h3{font-family:var(--font-d);font-size:1rem;font-weight:700;margin-bottom:0.4rem}
+.step-card p{font-size:0.83rem;line-height:1.55;color:rgba(14,13,11,0.55);font-weight:300}
+
+/* ── SCHOOLS ── */
+.schools-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.feat-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.feat{display:flex;gap:0.8rem;align-items:flex-start}
+.feat-dot{width:7px;height:7px;border-radius:50%;background:var(--moss);margin-top:5px;flex-shrink:0}
+.feat h4{font-size:0.9rem;font-weight:500;margin-bottom:0.15rem}
+.feat p{font-size:0.8rem;color:rgba(14,13,11,0.52);line-height:1.5}
+.mockup-box{background:var(--ink);border-radius:18px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.18)}
+.m-bar{background:#1a1917;padding:0.7rem 1rem;display:flex;align-items:center;gap:0.45rem}
+.dot{width:9px;height:9px;border-radius:50%}
+.m-body{padding:1.2rem}
+.m-label{font-size:0.78rem;color:rgba(255,255,255,0.3);margin-bottom:0.8rem;font-family:var(--font-d);font-weight:300}
+.s-row{display:flex;align-items:center;gap:0.8rem;padding:0.6rem 0.7rem;border-radius:9px;background:rgba(255,255,255,0.04);margin-bottom:0.4rem}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:500;color:white;flex-shrink:0}
+.sn{font-size:0.78rem;color:rgba(255,255,255,0.75);flex:1}
+.sl2{font-size:0.68rem;color:rgba(255,255,255,0.3)}
+.pm{width:52px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden}
+.pf{height:100%;border-radius:2px}
+
+/* ── PRICING ── */
+.pricing-sec{background:var(--cream)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.5rem}
+.pc{background:var(--warm);border-radius:var(--radius);padding:1.8rem;border:1px solid rgba(14,13,11,0.08);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+.pc:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,0,0,0.09)}
+.pc.feat-card{background:var(--moss);color:var(--warm);border-color:transparent}
+.pbadge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--sun);color:#4a3800;font-size:0.67rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;padding:0.25rem 0.9rem;border-radius:100px}
+.pname{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;opacity:0.55;margin-bottom:0.4rem}
+.pprice{font-family:var(--font-d);font-size:2.5rem;font-weight:900;line-height:1;margin-bottom:0.25rem}
+.pprice span{font-family:var(--font-b);font-size:0.9rem;font-weight:300;opacity:0.55}
+.pdesc{font-size:0.78rem;opacity:0.55;margin-bottom:1.2rem;line-height:1.4}
+.pfeat{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+.pfeat li{font-size:0.82rem;display:flex;gap:0.5rem;align-items:baseline;opacity:0.82}
+.pfeat li::before{content:'✓';font-weight:700;font-size:0.75rem;flex-shrink:0}
+.pc.feat-card .pfeat li::before{color:var(--sun)}
+.pc:not(.feat-card) .pfeat li::before{color:var(--moss)}
+.pbtn{width:100%;padding:0.75rem;border-radius:100px;font-family:var(--font-b);font-size:0.87rem;font-weight:500;cursor:pointer;border:none;transition:transform 0.15s,opacity 0.2s;display:block;text-align:center}
+.pbtn:hover{transform:translateY(-1px);opacity:0.9}
+.pc:not(.feat-card) .pbtn{background:var(--moss);color:white}
+.pc.feat-card .pbtn{background:var(--sun);color:#2a1f00}
+
+/* ── QUOTES ── */
+.quotes-sec{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;padding:4rem 5rem}
+.qcard2{background:var(--warm);border-radius:14px;padding:1.6rem;border:1px solid rgba(14,13,11,0.06);position:relative}
+.qcard2::before{content:'"';font-family:var(--font-d);font-size:3.5rem;color:rgba(45,90,61,0.12);position:absolute;top:0.4rem;right:1rem;line-height:1}
+.qt{font-family:var(--font-d);font-size:0.95rem;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:1rem;font-weight:300}
+.qa{display:flex;align-items:center;gap:0.7rem}
+.qav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:white}
+.qn{font-size:0.82rem;font-weight:500} .qr{font-size:0.72rem;color:rgba(14,13,11,0.42)}
+
+/* ── CTA ── */
+.cta-sec{background:var(--ink);text-align:center;padding:5rem;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(45,90,61,0.3)0%,transparent 70%)}
+.cta-sec h2{color:var(--warm);position:relative;z-index:1;font-size:clamp(2rem,3.5vw,3rem)}
+.cta-sec h2 em{color:var(--sun)}
+.cta-sec p{color:rgba(245,242,235,0.5);font-size:0.95rem;margin:1rem auto 2rem;max-width:440px;line-height:1.65;position:relative;z-index:1;font-weight:300}
+.cta-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.btn-sun{background:var(--sun);color:#2a1f00;padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:transform 0.15s,opacity 0.2s;display:inline-block}
+.btn-sun:hover{opacity:0.88;transform:translateY(-2px)}
+.btn-ow{background:transparent;color:var(--warm);padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:400;border:1px solid rgba(245,242,235,0.22);cursor:pointer;text-decoration:none;transition:border-color 0.2s,transform 0.15s;display:inline-block}
+.btn-ow:hover{border-color:rgba(245,242,235,0.55);transform:translateY(-2px)}
+
+/* ── FOOTER ── */
+footer{background:#0a0a09;color:rgba(245,242,235,0.35);padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.fl{font-family:var(--font-d);font-size:1rem;font-weight:900;color:rgba(245,242,235,0.65)}
+.fl span{color:var(--rust)}
+footer p{font-size:0.75rem}
+.flinks{display:flex;gap:1.2rem;flex-wrap:wrap}
+.flinks a{color:rgba(245,242,235,0.3);text-decoration:none;font-size:0.75rem;transition:color 0.2s}
+.flinks a:hover{color:rgba(245,242,235,0.65)}
+
+/* ── XP / TOAST ── */
+.xp-strip{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
+.xp-lbl{font-size:0.8rem;color:rgba(245,242,235,0.5)}
+.xp-trk{flex:1;background:rgba(255,255,255,0.1);border-radius:100px;height:6px;overflow:hidden}
+.xp-fill2{height:100%;background:var(--sun);border-radius:100px;transition:width 0.8s ease}
+.xp-pts{font-family:var(--font-d);font-size:0.9rem;font-weight:700;color:var(--sun)}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1917;color:var(--warm);padding:0.65rem 1.3rem;border-radius:100px;font-size:0.82rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:999;white-space:nowrap;border:1px solid rgba(255,255,255,0.1)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block}
+.spinner.drk{border-color:rgba(14,13,11,0.2);border-top-color:var(--moss)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp 0.65s ease forwards}
+.d1{animation-delay:0.1s}.d2{animation-delay:0.25s}.d3{animation-delay:0.4s}.d4{animation-delay:0.55s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem} nav ul{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto;padding:5rem 1.5rem 2.5rem}
+  .hero-bg{display:none} .hero-left{padding:0} .hero-right{display:none}
+  .sec{padding:3rem 1.5rem} .trust{padding:1.5rem}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .schools-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  .quotes-sec{grid-template-columns:1fr;padding:3rem 1.5rem}
+  .cta-sec{padding:3.5rem 1.5rem}
+  footer{padding:1.5rem}
+  .tab-nav{margin:0 1.5rem} .tab-content{padding:1.5rem}
+  .platform-header{padding:2.5rem 1.5rem 1rem}
+  .m1-grid{grid-template-columns:1fr} .quest-sidebar{display:none}
+  .m3-grid{grid-template-columns:1fr} .m3-right{min-height:300px}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ════ NAV ════ -->
+<nav>
+  <a href="#" class="nav-logo">Prompt<span>Kids</span></a>
+  <ul>
+    <li><a href="#plattform">Prova nu</a></li>
+    <li><a href="#hur">Hur det fungerar</a></li>
+    <li><a href="#skolor">För skolor</a></li>
+    <li><a href="#priser">Priser</a></li>
+    <li><a href="#kontakt" class="nav-cta">Boka demo</a></li>
+  </ul>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <p class="eyebrow fu">Digital bildning för framtiden</p>
+    <h1 class="fu d1">Lär barn att <em>tala</em> med AI</h1>
+    <p class="hero-desc fu d2">PromptKids är den spelbaserade plattformen som ger elever i åk 2–9 verktygen att använda AI klokt, kreativt och kritiskt. Anpassad till Lgr22. <strong>100% gratis.</strong></p>
+    <div class="hero-btns fu d3">
+      <a href="#plattform" class="btn-p">Prova direkt — gratis →</a>
+      <a href="#skolor" class="btn-s">För skolor & kommuner</a>
+    </div>
+    <div class="hero-stats fu d4">
+      <div><span class="stat-n">Gratis</span><span class="stat-l">Alltid</span></div>
+      <div><span class="stat-n">Lgr22</span><span class="stat-l">Anpassad</span></div>
+      <div><span class="stat-n">GDPR</span><span class="stat-l">Säker</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="card-stack">
+      <div class="qcard"><span class="cbadge bg">Uppdrag 1</span><div class="ctitle">Berätta för AI vem du är</div><div class="cdesc">Ge AI kontext om dig själv för bättre svar</div><div class="cbar"><div class="cfill" style="width:75%"></div></div></div>
+      <div class="qcard"><span class="cbadge bs">Uppdrag 4</span><div class="ctitle">Granska AI:s fel</div><div class="cdesc">Hitta misstag och korrigera AI:n</div><div class="cbar"><div class="cfill" style="width:40%"></div></div></div>
+      <div class="qcard"><span class="cbadge br">Uppdrag 5</span><div class="ctitle">Din superprompt</div><div class="cdesc">Använd allt du lärt dig i ett riktigt projekt</div><div class="cbar"><div class="cfill" style="width:15%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TRUST ════ -->
+<div class="trust">
+  <span class="trust-lbl">Utformat för</span>
+  <div class="trust-logos">
+    <span class="trust-logo">Skolverket-anpassad</span>
+    <span class="trust-logo">HelloWorld-partner</span>
+    <span class="trust-logo">290 kommuner</span>
+    <span class="trust-logo">GDPR-säker</span>
+    <span class="trust-logo">Alltid gratis</span>
+  </div>
+</div>
+
+<!-- ════ PLATFORM – THE REAL INTERACTIVE SECTION ════ -->
+<section class="platform-sec" id="plattform">
+  <div class="platform-header">
+    <p class="sec-label">Prova plattformen</p>
+    <h2>Lär dig promptning — <em>på riktigt</em></h2>
+    <p class="sec-sub">Välj en modul och börja direkt. AI:n svarar på svenska och ger dig feedback i realtid.</p>
+
+    <!-- XP strip -->
+    <div class="xp-strip" style="margin-top:1.2rem;max-width:500px">
+      <span class="xp-lbl">Din XP</span>
+      <div class="xp-trk"><div class="xp-fill2" id="globalXpBar" style="width:0%"></div></div>
+      <span class="xp-pts" id="globalXpPts">0 XP</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('mod1',this)">🎯 <span>Lös uppdrag</span></button>
+    <button class="tab-btn" onclick="switchTab('mod2',this)">🔁 <span>Iterera & förbättra</span></button>
+    <button class="tab-btn" onclick="switchTab('mod3',this)">✨ <span>Skapa & publicera</span></button>
+  </div>
+
+  <!-- ── TAB 1: LÖS UPPDRAG ── -->
+  <div class="tab-content active" id="tab-mod1">
+    <div class="m1-grid">
+      <div class="quest-sidebar" id="questSidebar"></div>
+      <div class="quest-panel" id="questPanel"></div>
+    </div>
+  </div>
+
+  <!-- ── TAB 2: ITERERA ── -->
+  <div class="tab-content" id="tab-mod2">
+    <div class="m2-wrap">
+      <div class="chal-tabs" id="chalTabs"></div>
+      <div class="chal-info">
+        <div class="chal-ttl" id="chalTitle2"></div>
+        <div class="chal-txt" id="chalText2"></div>
+      </div>
+      <div class="versions-list" id="versionsList">
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.25);text-align:center;padding:1rem 0">Inga försök ännu — skriv din första prompt nedan!</p>
+      </div>
+      <div>
+        <div class="iter-row">
+          <textarea class="iter-ta" id="iterTa" placeholder="Skriv din prompt och se hur svaret förändras med varje version…" rows="2"></textarea>
+          <button class="iter-btn" id="iterBtn" onclick="doIter()">↑</button>
+        </div>
+        <p class="iter-hint" style="margin-top:0.4rem">Tips: Prova 3+ versioner — den bästa markeras automatiskt ⭐</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 3: SKAPA ── -->
+  <div class="tab-content" id="tab-mod3">
+    <div class="m3-grid">
+      <div class="m3-left">
+        <div>
+          <div class="create-lbl">Typ av projekt</div>
+          <div class="ptype-grid" id="ptypeGrid2">
+            <button class="ptype-btn active" onclick="setPtype(this,'story')"><span class="ptype-icon">📖</span><span class="ptype-lbl">Berättelse</span></button>
+            <button class="ptype-btn" onclick="setPtype(this,'poem')"><span class="ptype-icon">🎭</span><span class="ptype-lbl">Dikt</span></button>
+            <button class="ptype-btn" onclick="setPtype(this,'info')"><span class="ptype-icon">🔬</span><span class="ptype-lbl">Faktaartikel</span></button>
+            <button class="ptype-btn" onclick="setPtype(this,'game')"><span class="ptype-icon">🎮</span><span class="ptype-lbl">Spelbeskrivning</span></button>
+          </div>
+        </div>
+        <div>
+          <div class="create-lbl" style="margin-bottom:0.5rem">Stil</div>
+          <div class="style-chips" id="styleChips2">
+            <button class="schip active" onclick="togStyle(this)">Rolig</button>
+            <button class="schip" onclick="togStyle(this)">Spännande</button>
+            <button class="schip" onclick="togStyle(this)">Läskig</button>
+            <button class="schip" onclick="togStyle(this)">Poetisk</button>
+            <button class="schip" onclick="togStyle(this)">Barnvänlig</button>
+          </div>
+        </div>
+        <div>
+          <div class="create-lbl" style="margin-bottom:0.4rem">Din idé</div>
+          <textarea class="create-ta" id="createTa" placeholder="Beskriv vad du vill skapa… t.ex. 'En berättelse om en robot som lär sig känna känslor'" rows="4"></textarea>
+        </div>
+        <div>
+          <div class="create-lbl" style="margin-bottom:0.3rem">Längd</div>
+          <input type="range" id="lenSlider" min="1" max="3" value="2" style="width:100%;accent-color:var(--rust)">
+          <div class="len-row"><span>Kort</span><span>Lagom</span><span>Lång</span></div>
+        </div>
+        <button class="create-btn" id="createBtn2" onclick="doCreate()">
+          <span id="createBtnTxt">✨ Skapa projekt</span>
+        </button>
+      </div>
+      <div class="m3-right">
+        <div class="out-empty" id="outEmpty"><div class="big">✨</div><p>Ditt projekt visas här<br>när du klickar "Skapa"</p></div>
+        <div class="proj-out" id="projOut">
+          <div class="pub-ribbon" id="pubRibbon">🎉 Publicerat! Ditt projekt är sparat.</div>
+          <div class="out-hd">
+            <div style="display:flex;align-items:center">
+              <span class="out-badge" id="outBadge" style="background:#f5ddd4;color:var(--rust)">Berättelse</span>
+              <span class="out-title" id="outTitle">Ditt projekt</span>
+            </div>
+            <div class="out-acts">
+              <button class="oact" onclick="doCopy()">Kopiera</button>
+              <button class="oact pub" onclick="doPublish()">Publicera 🚀</button>
+            </div>
+          </div>
+          <div class="out-content" id="outContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ HOW ════ -->
+<section class="how-sec sec" id="hur">
+  <p class="sec-label">Hur det fungerar</p>
+  <h2>Från nybörjare till <em>prompt-mästare</em></h2>
+  <p class="sec-sub">Eleverna avancerar genom tre moduler med uppdrag och riktiga AI-projekt. Läraren följer allt i realtid.</p>
+  <div class="steps-grid">
+    <div class="step-card"><div class="step-n">01</div><div class="step-icon">🎯</div><h3>Lös uppdrag</h3><p>Eleven möter ett verkligt problem och skriver en prompt för att lösa det. Direkt feedback ger lärande i stunden.</p></div>
+    <div class="step-card"><div class="step-n">02</div><div class="step-icon">🔁</div><h3>Iterera & förbättra</h3><p>Plattformen visar varför ett svar blev bra eller dåligt. Eleven justerar, försöker igen och förstår mönstret.</p></div>
+    <div class="step-card"><div class="step-n">03</div><div class="step-icon">✨</div><h3>Skapa & publicera</h3><p>Elever skapar egna projekt med AI som verktyg — berättelser, dikter, faktaartiklar. De äger sina verk.</p></div>
+    <div class="step-card"><div class="step-n">04</div><div class="step-icon">🏫</div><h3>Läraren följer upp</h3><p>Dashboard visar klassprogress och elevernas prompthistorik. Inga gissningar om vem som behöver hjälp.</p></div>
+  </div>
+</section>
+
+<!-- ════ SCHOOLS ════ -->
+<section class="sec" id="skolor">
+  <div class="schools-grid">
+    <div>
+      <p class="sec-label">För skolor & kommuner</p>
+      <h2>Redo för <em>klassrummet</em></h2>
+      <p class="sec-sub">PromptKids är byggt med lärare, för lärare. Integreras i befintliga system på en eftermiddag.</p>
+      <div class="feat-list">
+        <div class="feat"><div class="feat-dot"></div><div><h4>Lgr22-kopplat</h4><p>Varje uppdrag är mappat till kunskapskrav i svenska, samhällskunskap och teknik.</p></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><h4>GDPR & dataskydd</h4><p>All data lagras på svenska servrar. Inga annonser, ingen datadelning med tredje part.</p></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><h4>Kommunavtal</h4><p>SKR-kompatibel avtalsstruktur redo att signera. Vi hanterar upphandlingsprocessen.</p></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><h4>Lärarutbildning ingår</h4><p>2 timmars onboarding + löpande kompetensutveckling för all undervisningspersonal.</p></div></div>
+      </div>
+    </div>
+    <div class="mockup-box">
+      <div class="m-bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div>
+      <div class="m-body">
+        <div class="m-label">Klass 6B — Vecka 14 · Uppdrag 3 av 8</div>
+        <div class="s-row"><div class="av" style="background:#2d5a3d">EA</div><span class="sn">Elsa Andersson</span><span class="sl2">Nivå 4</span><div class="pm"><div class="pf" style="width:88%;background:#6a9e75"></div></div></div>
+        <div class="s-row"><div class="av" style="background:#4a7fa8">ML</div><span class="sn">Marcus Lindberg</span><span class="sl2">Nivå 3</span><div class="pm"><div class="pf" style="width:61%;background:#4a7fa8"></div></div></div>
+        <div class="s-row"><div class="av" style="background:#c45e32">FJ</div><span class="sn">Fatima Johansson</span><span class="sl2">Nivå 4</span><div class="pm"><div class="pf" style="width:79%;background:#c45e32"></div></div></div>
+        <div class="s-row"><div class="av" style="background:#8b7bb8">NE</div><span class="sn">Noah Eriksson</span><span class="sl2">Nivå 2</span><div class="pm"><div class="pf" style="width:33%;background:#8b7bb8"></div></div></div>
+        <div class="s-row"><div class="av" style="background:#5a7a3d">KP</div><span class="sn">Klara Pettersson</span><span class="sl2">Nivå 3</span><div class="pm"><div class="pf" style="width:55%;background:#6a9e75"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PRICING ════ -->
+<section class="pricing-sec sec" id="priser">
+  <p class="sec-label">Priser</p>
+  <h2>Alltid <em>gratis</em> för elever</h2>
+  <p class="sec-sub">Plattformen är helt fri att använda. Skolor och kommuner kan uppgradera för avancerade funktioner och support.</p>
+  <div class="price-grid">
+    <div class="pc">
+      <div class="pname">Elev & familj</div>
+      <div class="pprice">0 kr<span>/alltid</span></div>
+      <div class="pdesc">Alla tre moduler. Inga kreditkort. Ingen tidsgräns.</div>
+      <ul class="pfeat">
+        <li>Alla 3 moduler</li><li>5 uppdrag</li><li>Obegränsad iteration</li><li>Skapa & spara projekt</li>
+      </ul>
+      <button class="pbtn" onclick="document.getElementById('plattform').scrollIntoView({behavior:'smooth'})">Börja nu — gratis</button>
+    </div>
+    <div class="pc feat-card">
+      <div class="pbadge">Populärast</div>
+      <div class="pname">Skola</div>
+      <div class="pprice">89 kr<span>/elev/år</span></div>
+      <div class="pdesc">För hela skolan med lärardashboard och avancerade funktioner.</div>
+      <ul class="pfeat">
+        <li>Allt i gratis-versionen</li><li>40+ uppdrag</li><li>Lärardashboard</li><li>GDPR-dokumentation</li><li>Onboarding & utbildning</li><li>Prioriterad support</li>
+      </ul>
+      <button class="pbtn">Boka demo</button>
+    </div>
+    <div class="pc">
+      <div class="pname">Kommun</div>
+      <div class="pprice">65 kr<span>/elev/år</span></div>
+      <div class="pdesc">Kommunavtal för alla skolor med volymrabatt.</div>
+      <ul class="pfeat">
+        <li>Alla skolor i kommunen</li><li>Central administrationspanel</li><li>Anpassade rapporter</li><li>Dedikerad kundansvarig</li><li>Lärarutbildning på plats</li>
+      </ul>
+      <button class="pbtn">Kontakta oss</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════ QUOTES ════ -->
+<div class="quotes-sec">
+  <div class="qcard2"><p class="qt">Eleverna förstår nu varför ett prompt ger olika svar — den kritiska tanken vaknar på ett sätt jag aldrig sett med andra digitala verktyg.</p><div class="qa"><div class="qav" style="background:#2d5a3d">MH</div><div><div class="qn">Maria Holmberg</div><div class="qr">Lärare, Bergaskolan Göteborg</div></div></div></div>
+  <div class="qcard2"><p class="qt">Vi letade länge efter ett verktyg som är både pedagogiskt solitt och GDPR-säkert. PromptKids är det enda som klarar båda kraven.</p><div class="qa"><div class="qav" style="background:#4a7fa8">PL</div><div><div class="qn">Per Lindqvist</div><div class="qr">IT-strateg, Malmö stad</div></div></div></div>
+  <div class="qcard2"><p class="qt">Mina elever i åk 4 kan nu förklara för sina föräldrar vad AI faktiskt är — och hur man använder det ansvarsfullt.</p><div class="qa"><div class="qav" style="background:#c45e32">AK</div><div><div class="qn">Anna Karlsson</div><div class="qr">Klasslärare, Sundsvall</div></div></div></div>
+</div>
+
+<!-- ════ CTA ════ -->
+<section class="cta-sec" id="kontakt">
+  <h2>Ge dina elever <em>framtidens</em> superkraft</h2>
+  <p>Börja direkt — gratis. Eller boka en demo för din skola eller kommun.</p>
+  <div class="cta-btns">
+    <a href="#plattform" class="btn-sun">Prova nu — helt gratis</a>
+    <a href="mailto:hej@promptkids.se" class="btn-ow">Boka skolademo</a>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="fl">Prompt<span>Kids</span></div>
+  <p>© 2025 PromptKids AB · Falkenberg, Sverige</p>
+  <div class="flinks">
+    <a href="#">Integritetspolicy</a><a href="#">Dataskydd</a><a href="#">Villkor</a><a href="#">Press</a><a href="#">Kontakt</a>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+const quests = [
+  { id:1, title:"Berätta för AI vem du är", diff:"easy",
+    badge:"bg", badgeText:"Uppdrag 1",
+    desc:"Skriv en prompt som gör att AI förstår vem du är och vad du tycker om. Ju mer detaljer, desto bättre svar!",
+    tip:"💡 Berätta om din ålder, dina intressen och ställ en konkret fråga. Skriv minst 2 meningar.",
+    criteria:["Nämner ålder eller klass","Nämner ett intresse","Ställer en fråga","Mer än 20 ord"],
+    sys:"Du är en vänlig AI för barn i Sverige. Svara på svenska. Var varm och anpassa svaret till vad barnet berättat. Max 150 ord.",
+    xp:50 },
+  { id:2, title:"Förklara något svårt enkelt", diff:"easy",
+    badge:"bg", badgeText:"Uppdrag 2",
+    desc:"Be AI förklara något svårt — men säg EXAKT vad du redan vet och vad du inte förstår.",
+    tip:"💡 Börja med 'Jag förstår att… men förstår inte riktigt…' Det gör din prompt mycket tydligare!",
+    criteria:["Anger ett ämne","Säger vad man vet","Ber om enkel förklaring","Mer än 25 ord"],
+    sys:"Du är en pedagogisk AI för barn. Förklara enkelt och anpassat till vad barnet redan vet. Använd ett exempel. Svara på svenska. Max 200 ord.",
+    xp:60 },
+  { id:3, title:"Planera din drömdag", diff:"easy",
+    badge:"bs", badgeText:"Uppdrag 3",
+    desc:"Be AI hjälpa dig planera en perfekt dag. Ge detaljer om vad du gillar, vart du bor och hur mycket tid du har.",
+    tip:"💡 Ju fler detaljer, desto bättre plan. Berätta om plats, budget och vad du INTE vill göra.",
+    criteria:["Nämner en aktivitet","Ger tidsram eller stad","Personlig detalj","Mer än 30 ord"],
+    sys:"Du är en kreativ planeringsassistent för barn. Skapa en inspirerande dagplan baserad på barnets intressen. Strukturera med tider. Svara på svenska. Max 250 ord.",
+    xp:70 },
+  { id:4, title:"Granska AI:s fel", diff:"med",
+    badge:"bs", badgeText:"Uppdrag 4",
+    desc:"Be AI berätta om ett ämne du kan väldigt bra — och se om du hittar ett fel. Skriv en uppföljningsprompt som korrigerar AI:n!",
+    tip:"💡 Välj ett ämne du verkligen kan — ditt favoritspel, din hemort. AI gör ibland misstag!",
+    criteria:["Tydligt ämne anges","Ber om specifika detaljer","Instruerar om noggrannhet","Mer än 20 ord"],
+    sys:"Du är en AI som ibland gör små misstag. Svara på svenska om ämnet men inkludera ALLTID en liten felaktighet möjlig att identifiera. Max 150 ord.",
+    xp:80 },
+  { id:5, title:"Din superprompt", diff:"hard",
+    badge:"br", badgeText:"Uppdrag 5",
+    desc:"Visa vad du lärt dig! Skriv din bästa prompt för att lösa ett riktigt problem — i skolan, hemma eller med ett hobby-projekt.",
+    tip:"💡 Använd allt: ge kontext, säg vad du vet, vad du vill ha, i vilket format och hur långt svaret ska vara.",
+    criteria:["Tydlig kontextbeskrivning","Specificerat format/längd","Personliga detaljer","Mer än 50 ord"],
+    sys:"Du är en AI-expert. Ge ett riktigt användbart, konkret svar. Anpassa helt till kontexten. Svara på svenska. Max 300 ord.",
+    xp:100 }
+];
+
+const challenges = [
+  { title:"🐉 Berätta om drakar", text:"Prova olika prompts och se hur svaret anpassas till dig!", sys:"Du är en berättare för barn. Svara på svenska om drakar, anpassa stilen efter vad prompten antyder om användaren. Max 120 ord." },
+  { title:"🌍 Klimatfakta", text:"Be om info om klimatförändringar. Bli mer och mer specifik och se hur svaret förbättras!", sys:"Du är en pedagogisk miljö-AI för barn. Svara på svenska om klimat. Anpassa komplexiteten efter prompten. Max 130 ord." },
+  { title:"🍕 Recept-hjälp", text:"Be om ett recept och ge mer kontext — allergier, tid, vad du gillar — se hur svaret förändras!", sys:"Du är en kockassistent för barn. Svara på svenska med recept helt anpassat efter kontexten. Max 150 ord." }
+];
+
+// ═══════════════════ STATE ═══════════════════
+let st = { xp:0, done:[], currentQ:0, iterChal:0, iterVers:[], ptype:'story', styles:['Rolig'] };
+
+// ═══════════════════ TABS ═══════════════════
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'mod1' && !document.getElementById('questSidebar').innerHTML) initMod1();
+  if (id === 'mod2' && !document.getElementById('chalTabs').innerHTML) initMod2();
+}
+
+// ═══════════════════ XP ═══════════════════
+function addXP(n) {
+  st.xp += n;
+  const pct = Math.min((st.xp / 500) * 100, 100);
+  document.getElementById('globalXpBar').style.width = pct + '%';
+  document.getElementById('globalXpPts').textContent = st.xp + ' XP';
+  toast('+' + n + ' XP! 🌟');
+}
+
+// ═══════════════════ MOD 1 ═══════════════════
+function initMod1() {
+  renderSidebar();
+  renderQuestPanel(0);
+}
+
+function renderSidebar() {
+  const sb = document.getElementById('questSidebar');
+  sb.innerHTML = quests.map((q, i) => `
+    <div class="q-item ${i===st.currentQ?'active':''} ${st.done.includes(i)?'done':''}" onclick="selQ(${i})">
+      <div class="qi-top">
+        <span class="qi-num">Uppdrag ${q.id}</span>
+        ${st.done.includes(i)?'<span class="qi-chk">✓</span>':''}
+      </div>
+      <div class="qi-t">${q.title}</div>
+      <div class="qi-d d${q.diff==='easy'?'e':q.diff==='med'?'m':'h'}">${q.diff==='easy'?'⬤ Lätt':q.diff==='med'?'⬤ Medel':'⬤ Svår'}</div>
+    </div>`).join('');
+}
+
+function selQ(i) { st.currentQ = i; renderSidebar(); renderQuestPanel(i); }
+
+function renderQuestPanel(i) {
+  const q = quests[i];
+  document.getElementById('questPanel').innerHTML = `
+    <div class="qp-card">
+      <span class="qp-badge ${q.badge}">${q.badgeText}</span>
+      <div class="qp-t">${q.title}</div>
+      <div class="qp-d">${q.desc}</div>
+      <div class="qp-tip">${q.tip}</div>
+    </div>
+    <div class="prompt-wrap">
+      <textarea class="prompt-ta" id="pta${i}" placeholder="Skriv din prompt här…" oninput="updCC(${i})"></textarea>
+      <div class="prompt-footer">
+        <span class="char-c" id="cc${i}">0 tecken</span>
+        <button class="send-btn" id="sb${i}" onclick="sendQ(${i})">Skicka till AI →</button>
+      </div>
+    </div>
+    <div class="ai-box" id="aib${i}">
+      <div class="ai-hd">🤖 AI svarar</div>
+      <div class="ai-bd" id="aibd${i}"></div>
+    </div>
+    <div class="fb-box" id="fb${i}">
+      <div class="fb-hd">
+        <span id="fbe${i}">⭐</span>
+        <span class="fb-title" id="fbt${i}">Feedback</span>
+        <span class="fb-score" id="fbs${i}"></span>
+      </div>
+      <div class="fb-txt" id="fbtxt${i}"></div>
+      <div class="fb-chips" id="fbc${i}"></div>
+      ${i<quests.length-1
+        ?`<button class="next-btn" onclick="selQ(${i+1})">Nästa uppdrag →</button>`
+        :`<button class="next-btn" style="background:var(--moss)" onclick="switchTabByName('mod2')">🔁 Prova modul 2</button>`}
+    </div>`;
+}
+
+function switchTabByName(id) {
+  const btn = document.querySelector(`.tab-btn[onclick*="${id}"]`);
+  if (btn) switchTab(id, btn);
+  document.getElementById('plattform').scrollIntoView({behavior:'smooth'});
+}
+
+function updCC(i) {
+  const v = document.getElementById('pta' + i).value;
+  document.getElementById('cc' + i).textContent = v.length + ' tecken';
+}
+
+async function sendQ(i) {
+  const txt = document.getElementById('pta' + i).value.trim();
+  if (!txt) { toast('Skriv något först!'); return; }
+  const btn = document.getElementById('sb' + i);
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Skickar…';
+  const aib = document.getElementById('aib' + i);
+  const aibd = document.getElementById('aibd' + i);
+  aib.classList.add('vis');
+  aibd.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  const q = quests[i];
+  try {
+    const res = await ai(q.sys, txt);
+    aibd.textContent = res;
+    const sc = evalPrompt(txt, q.criteria);
+    showFB(i, sc, q);
+    if (!st.done.includes(i)) {
+      const earned = Math.round(q.xp * sc.pct / 100);
+      if (earned > 0) addXP(earned);
+      st.done.push(i);
+      renderSidebar();
+    }
+  } catch(e) { aibd.textContent = 'Något gick fel — försök igen.'; }
+  btn.disabled = false; btn.innerHTML = 'Skicka igen →';
+}
+
+function evalPrompt(p, criteria) {
+  const l = p.toLowerCase(); const w = p.split(/\s+/).length;
+  const checks = criteria.map(c => {
+    if (c.includes('Mer än')) return {label:c, pass:w >= parseInt(c.match(/\d+/)[0])};
+    if (c.includes('ålder')||c.includes('klass')) return {label:c, pass:/\d|åk|klass|år|gammal/.test(l)};
+    if (c.includes('intresse')) return {label:c, pass:p.length>30};
+    if (c.includes('fråga')) return {label:c, pass:p.includes('?')||/kan|vill|hjälp|berätta/.test(l)};
+    if (c.includes('ämne')) return {label:c, pass:p.length>20};
+    if (c.includes('vet')) return {label:c, pass:/vet|förstår|känner|har lärt/.test(l)};
+    if (c.includes('enkel')) return {label:c, pass:/enkelt|lätt|förstå|förklara|enkel/.test(l)};
+    if (c.includes('aktivitet')) return {label:c, pass:p.length>15};
+    if (c.includes('tidsram')||c.includes('stad')) return {label:c, pass:/timm|dag|stad|i |på |göte|stock|malmö/.test(l)};
+    if (c.includes('kontext')) return {label:c, pass:p.length>60};
+    if (c.includes('format')) return {label:c, pass:/lista|punkter|kort|lång|ord|format|steg/.test(l)};
+    return {label:c, pass:p.length>25};
+  });
+  const passed = checks.filter(c=>c.pass).length;
+  return {checks, passed, total:checks.length, pct:Math.round(passed/checks.length*100)};
+}
+
+function showFB(i, sc, q) {
+  const fb = document.getElementById('fb' + i);
+  fb.classList.add('vis');
+  const cl = sc.pct>=75?'fb-great':sc.pct>=50?'fb-ok':'fb-poor';
+  fb.className = 'fb-box vis ' + cl;
+  document.getElementById('fbe'+i).textContent = sc.pct>=75?'🌟':sc.pct>=50?'👍':'💪';
+  document.getElementById('fbt'+i).textContent = sc.pct>=75?'Fantastisk prompt!':sc.pct>=50?'Bra försök!':'Du kan bättre!';
+  document.getElementById('fbs'+i).textContent = sc.pct+'%';
+  document.getElementById('fbtxt'+i).textContent = sc.pct>=75
+    ?'Imponerande! Du gav AI tillräckligt med kontext för ett riktigt bra svar.'
+    :sc.pct>=50?'Bra jobbat! Kolla vad som saknades nedan och försök göra prompten ännu bättre.'
+    :'Din prompt är lite för kort eller vag. Lägg till fler detaljer om dig själv och vad du vill ha!';
+  document.getElementById('fbc'+i).innerHTML = sc.checks.map(c=>
+    `<span class="fb-chip ${c.pass?'fcp':'fcf'}">${c.pass?'✓':'✗'} ${c.label}</span>`
+  ).join('');
+}
+
+// ═══════════════════ MOD 2 ═══════════════════
+function initMod2() {
+  document.getElementById('chalTabs').innerHTML = challenges.map((c,i)=>
+    `<button class="ctab ${i===0?'active':''}" onclick="selChal(${i},this)">${c.title}</button>`
+  ).join('');
+  updChalInfo();
+}
+
+function selChal(i, btn) {
+  st.iterChal = i; st.iterVers = [];
+  document.querySelectorAll('.ctab').forEach((b,j)=>b.classList.toggle('active',j===i));
+  updChalInfo();
+  document.getElementById('versionsList').innerHTML = '<p style="font-size:0.78rem;color:rgba(255,255,255,0.25);text-align:center;padding:1rem 0">Inga försök ännu — skriv din första prompt nedan!</p>';
+}
+
+function updChalInfo() {
+  const c = challenges[st.iterChal];
+  document.getElementById('chalTitle2').textContent = c.title;
+  document.getElementById('chalText2').textContent = c.text;
+}
+
+async function doIter() {
+  const txt = document.getElementById('iterTa').value.trim();
+  if (!txt) { toast('Skriv en prompt!'); return; }
+  const btn = document.getElementById('iterBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border-color:rgba(255,255,255,0.3);border-top-color:white"></span>';
+  const c = challenges[st.iterChal];
+  try {
+    const res = await ai(c.sys, txt);
+    const q = scoreIter(txt);
+    st.iterVers.push({prompt:txt, response:res, score:q.score, chips:q.chips});
+    addXP(q.score + (st.iterVers.length===3?30:0));
+    if (st.iterVers.length===3) toast('🎯 3 försök! +30 bonus XP');
+    renderVersions();
+    document.getElementById('iterTa').value = '';
+  } catch(e) { toast('Fel – försök igen'); }
+  btn.disabled = false; btn.innerHTML = '↑';
+}
+
+function scoreIter(p) {
+  const l = p.toLowerCase(); const w = p.split(/\s+/).length;
+  let score = 10; const chips = [];
+  if (w>10){score+=15;chips.push({t:'Tillräcklig längd',g:true})}else chips.push({t:'För kort',g:false});
+  if (/jag är|jag heter|jag gillar|årig|jag tycker/.test(l)){score+=15;chips.push({t:'Personlig kontext',g:true})}
+  if (/förklara|berätta|visa|hjälp|ge mig|kan du/.test(l)){score+=10;chips.push({t:'Tydlig instruktion',g:true})}
+  if (/enkelt|lista|kort|lång|exempel|på svenska|detaljerad/.test(l)){score+=15;chips.push({t:'Format angivet',g:true})}
+  if (/varför|hur|vad|när|var/.test(l)){score+=10;chips.push({t:'Frågande',g:true})}
+  return {score:Math.min(score,60), chips};
+}
+
+function renderVersions() {
+  const panel = document.getElementById('versionsList');
+  const best = st.iterVers.reduce((b,v,i)=>v.score>b.score?{score:v.score,i}:b,{score:-1,i:0});
+  panel.innerHTML = [...st.iterVers].reverse().map((v,ri)=>{
+    const i = st.iterVers.length-1-ri;
+    const isBest = i===best.i && st.iterVers.length>1;
+    const sc = v.score>=50?'sh':v.score>=30?'sm':'sl';
+    return `<div class="ver-entry ${isBest?'best':''}">
+      <div class="ver-hd" onclick="togVer(this)">
+        <span class="ver-n">#${i+1}</span>
+        <span class="ver-p">"${v.prompt}"</span>
+        <span class="ver-s ${sc}">${v.score}p</span>
+        ${isBest?'<span class="ver-best">⭐ Bäst</span>':''}
+        <span style="color:rgba(255,255,255,0.25);font-size:0.75rem">▼</span>
+      </div>
+      <div class="ver-detail">
+        <div class="ver-resp">${v.response}</div>
+        <div class="ver-chips">${v.chips.map(c=>`<span class="vc ${c.g?'vcg':'vcb'}">${c.g?'✓':'✗'} ${c.t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togVer(hd) {
+  const d = hd.nextElementSibling;
+  d.classList.toggle('open');
+  hd.querySelector('span:last-child').textContent = d.classList.contains('open')?'▲':'▼';
+}
+
+// ═══════════════════ MOD 3 ═══════════════════
+function setPtype(btn, t) {
+  document.querySelectorAll('.ptype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); st.ptype = t;
+}
+
+function togStyle(btn) {
+  btn.classList.toggle('active');
+  st.styles = Array.from(document.querySelectorAll('.schip.active')).map(b=>b.textContent);
+}
+
+async function doCreate() {
+  const idea = document.getElementById('createTa').value.trim();
+  if (!idea) { toast('Beskriv din idé!'); return; }
+  const btn = document.getElementById('createBtn2');
+  const btxt = document.getElementById('createBtnTxt');
+  btn.disabled = true; btxt.innerHTML = '<span class="spinner drk"></span> Skapar…';
+  const types = {story:'Berättelse',poem:'Dikt',info:'Faktaartikel',game:'Spelbeskrivning'};
+  const lens = {'1':'kort (max 150 ord)','2':'medellång (max 300 ord)','3':'lång (max 500 ord)'};
+  const len = lens[document.getElementById('lenSlider').value];
+  const sys = `Du är en kreativ AI-assistent för barn i Sverige. Skapa en ${types[st.ptype]} på svenska. Stil/ton: ${st.styles.join(', ')||'neutral'}. Längd: ${len}. Börja direkt med en fetstil-titel på rad 1, sedan innehållet. Gör det minnesvärt och engagerande.`;
+  document.getElementById('outEmpty').style.display = 'none';
+  const po = document.getElementById('projOut');
+  const oc = document.getElementById('outContent');
+  po.classList.add('vis');
+  oc.innerHTML = '<span style="color:var(--sage);display:flex;align-items:center;gap:6px"><span class="spinner drk"></span> Skapar ditt projekt…</span>';
+  try {
+    const res = await ai(sys, idea);
+    const lines = res.split('\n'); let title = 'Ditt projekt', body = res;
+    if (lines[0] && lines[0].length < 70) { title = lines[0].replace(/[*#]/g,'').trim(); body = lines.slice(1).join('\n').trim(); }
+    oc.innerHTML = fmtOut(body);
+    document.getElementById('outTitle').textContent = title;
+    const bs = {story:['#f5ddd4','var(--rust)'],poem:['rgba(139,123,184,0.2)','var(--lav)'],info:['rgba(45,90,61,0.2)','var(--sage)'],game:['#f5edbb','#7a6000']};
+    const b = bs[st.ptype]||bs.story;
+    const ob = document.getElementById('outBadge');
+    ob.style.background=b[0]; ob.style.color=b[1]; ob.textContent=types[st.ptype];
+    document.getElementById('pubRibbon').classList.remove('vis');
+    addXP(50);
+  } catch(e) { oc.textContent='Något gick fel — försök igen.'; }
+  btn.disabled=false; btxt.innerHTML='✨ Skapa nytt';
+}
+
+function fmtOut(t) {
+  return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+}
+function doCopy() { navigator.clipboard.writeText(document.getElementById('outContent').innerText).then(()=>toast('Kopierat! 📋')); }
+function doPublish() { document.getElementById('pubRibbon').classList.add('vis'); addXP(25); toast('Publicerat! 🚀'); }
+
+// ═══════════════════ AI CALL ═══════════════════
+async function ai(system, user) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system,messages:[{role:'user',content:user}]})
+  });
+  if (!r.ok) throw new Error('API error');
+  const d = await r.json();
+  return d.content.map(b=>b.type==='text'?b.text:'').join('');
+}
+
+// ═══════════════════ TOAST ═══════════════════
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// INIT
+initMod1();
+</script>
+</body>
+</html>
