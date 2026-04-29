@@ -3,896 +3,656 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PromptKids – Lär barn att tala med AI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>PromptKids 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --ink: #0e0d0b; --paper: #f5f2eb; --cream: #ede9df;
-  --moss: #2d5a3d; --sage: #6a9e75; --sun: #e8c84a;
-  --rust: #c45e32; --sky: #4a7fa8; --lav: #8b7bb8;
-  --warm: #faf8f3;
-  --font-d: 'Fraunces', Georgia, serif;
-  --font-b: 'DM Sans', sans-serif;
-  --radius: 16px;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0e17;--card:#1a1828;--card2:#221f35;
+  --pink:#e84393;--purple:#7c5cbf;--yellow:#f7c948;
+  --cyan:#00d4c8;--green:#2ecc71;--orange:#ff6b35;
+  --white:#f5f0ff;--grey:#8888aa;
+  --font:'Nunito',sans-serif;--r:20px;--rs:12px;
 }
-html { scroll-behavior: smooth; }
-body { font-family: var(--font-b); background: var(--paper); color: var(--ink); overflow-x: hidden; }
-nav { position: fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1rem 3rem; background:rgba(245,242,235,0.92); backdrop-filter:blur(14px); border-bottom:1px solid rgba(14,13,11,0.07); }
-.nav-logo { font-family:var(--font-d); font-size:1.4rem; font-weight:900; color:var(--moss); letter-spacing:-0.02em; text-decoration:none; }
-.nav-logo span { color:var(--rust); }
-nav ul { list-style:none; display:flex; gap:2rem; }
-nav ul a { text-decoration:none; color:var(--ink); font-size:0.85rem; font-weight:400; letter-spacing:0.04em; text-transform:uppercase; opacity:0.65; transition:opacity 0.2s; }
-nav ul a:hover { opacity:1; }
-.nav-cta { background:var(--moss)!important; color:var(--warm)!important; padding:0.5rem 1.3rem!important; border-radius:100px; opacity:1!important; font-weight:500!important; }
-.hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; padding-top:70px; position:relative; overflow:hidden; }
-.hero-bg { position:absolute; top:-10%; right:-5%; width:60%; height:120%; background:var(--moss); border-radius:40% 0 0 50%; z-index:0; }
-.hero-left { position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; padding:4rem 3rem 4rem 5rem; }
-.eyebrow { font-size:0.75rem; font-weight:500; text-transform:uppercase; letter-spacing:0.12em; color:var(--rust); margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem; }
-.eyebrow::before { content:''; display:block; width:24px; height:2px; background:var(--rust); }
-h1 { font-family:var(--font-d); font-size:clamp(2.8rem,4.5vw,4.5rem); font-weight:900; line-height:1.0; letter-spacing:-0.03em; margin-bottom:1.2rem; }
-h1 em { font-style:italic; color:var(--moss); font-weight:300; }
-.hero-desc { font-size:1rem; line-height:1.65; color:rgba(14,13,11,0.6); max-width:420px; margin-bottom:2rem; font-weight:300; }
-.hero-btns { display:flex; gap:0.8rem; flex-wrap:wrap; }
-.btn-p { background:var(--rust); color:white; padding:0.8rem 1.8rem; border-radius:100px; font-family:var(--font-b); font-size:0.9rem; font-weight:500; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:transform 0.15s,background 0.2s; }
-.btn-p:hover { background:#a34d28; transform:translateY(-2px); }
-.btn-s { background:transparent; color:var(--ink); padding:0.8rem 1.8rem; border-radius:100px; font-family:var(--font-b); font-size:0.9rem; font-weight:400; border:1.5px solid rgba(14,13,11,0.22); cursor:pointer; text-decoration:none; display:inline-block; transition:border-color 0.2s,transform 0.15s; }
-.btn-s:hover { border-color:var(--ink); transform:translateY(-2px); }
-.hero-stats { display:flex; gap:2rem; margin-top:2.5rem; padding-top:2rem; border-top:1px solid rgba(14,13,11,0.1); }
-.stat-n { font-family:var(--font-d); font-size:1.8rem; font-weight:900; color:var(--moss); display:block; }
-.stat-l { font-size:0.72rem; color:rgba(14,13,11,0.45); text-transform:uppercase; letter-spacing:0.06em; }
-.hero-right { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; padding:3rem 2rem; }
-.card-stack { position:relative; width:300px; height:340px; }
-.qcard { position:absolute; background:var(--warm); border-radius:18px; padding:1.3rem; box-shadow:0 12px 36px rgba(0,0,0,0.13); width:260px; }
-.qcard:nth-child(1){top:0;left:0;--r:-4deg} .qcard:nth-child(2){top:55px;left:40px;--r:2deg} .qcard:nth-child(3){top:115px;left:15px;--r:-1deg}
-.qcard { animation:floatCard 4s ease-in-out infinite; transform:rotate(var(--r,0deg)); }
-.qcard:nth-child(2){animation-delay:0.7s} .qcard:nth-child(3){animation-delay:1.4s}
-@keyframes floatCard { 0%,100%{transform:translateY(0) rotate(var(--r,0deg))} 50%{transform:translateY(-7px) rotate(var(--r,0deg))} }
-.cbadge { display:inline-block; font-size:0.65rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; padding:0.2rem 0.65rem; border-radius:100px; margin-bottom:0.6rem; }
-.bg { background:#d4ead9; color:var(--moss); } .bs { background:#f5edbb; color:#7a6000; } .br { background:#f5ddd4; color:var(--rust); }
-.ctitle { font-family:var(--font-d); font-size:0.95rem; font-weight:700; margin-bottom:0.3rem; }
-.cdesc { font-size:0.75rem; color:rgba(14,13,11,0.5); line-height:1.4; }
-.cbar { margin-top:0.7rem; height:3px; background:#e0ddd5; border-radius:2px; overflow:hidden; }
-.cfill { height:100%; background:var(--moss); border-radius:2px; }
-.trust { background:var(--cream); padding:1.5rem 4rem; display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap; border-top:1px solid rgba(14,13,11,0.07); border-bottom:1px solid rgba(14,13,11,0.07); }
-.trust-lbl { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(14,13,11,0.38); white-space:nowrap; }
-.trust-logos { display:flex; gap:2.5rem; flex-wrap:wrap; align-items:center; }
-.trust-logo { font-family:var(--font-d); font-size:1rem; font-weight:700; color:rgba(14,13,11,0.28); }
-.sec { padding:5rem; }
-.sec-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; font-weight:500; color:var(--rust); margin-bottom:0.7rem; }
-h2 { font-family:var(--font-d); font-size:clamp(2rem,3vw,2.8rem); font-weight:900; line-height:1.1; letter-spacing:-0.025em; margin-bottom:0.8rem; }
-h2 em { font-style:italic; color:var(--moss); font-weight:300; }
-.sec-sub { font-size:0.95rem; color:rgba(14,13,11,0.58); line-height:1.65; font-weight:300; max-width:500px; }
-.platform-sec { background:var(--moss); color:var(--warm); padding:0; }
-.platform-header { padding:4rem 5rem 2rem; }
-.platform-header .sec-label { color:var(--sun); }
-.platform-header h2 { color:var(--warm); }
-.platform-header h2 em { color:var(--sun); }
-.platform-header .sec-sub { color:rgba(245,242,235,0.6); }
-.tab-nav { display:flex; gap:0; border-bottom:1px solid rgba(255,255,255,0.12); margin:0 5rem; }
-.tab-btn { background:none; border:none; color:rgba(245,242,235,0.5); font-family:var(--font-b); font-size:0.9rem; font-weight:400; padding:1rem 1.8rem; cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1px; transition:color 0.2s, border-color 0.2s; display:flex; align-items:center; gap:0.5rem; }
-.tab-btn:hover { color:rgba(245,242,235,0.85); }
-.tab-btn.active { color:var(--warm); border-bottom-color:var(--sun); font-weight:500; }
-.tab-content { display:none; padding:2rem 5rem 4rem; }
-.tab-content.active { display:block; }
-.m1-grid { display:grid; grid-template-columns:260px 1fr; gap:1.5rem; }
-.quest-sidebar { background:rgba(255,255,255,0.06); border-radius:var(--radius); padding:1rem; display:flex; flex-direction:column; gap:0.5rem; }
-.q-item { border-radius:10px; padding:0.8rem; cursor:pointer; border:1.5px solid transparent; transition:all 0.15s; }
-.q-item:hover { background:rgba(255,255,255,0.08); }
-.q-item.active { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.2); }
-.q-item.done { opacity:0.55; }
-.qi-top { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.2rem; }
-.qi-num { font-size:0.6rem; font-weight:500; color:var(--sun); text-transform:uppercase; letter-spacing:0.08em; }
-.qi-chk { margin-left:auto; color:var(--sun); font-size:0.75rem; }
-.qi-t { font-size:0.82rem; font-weight:500; color:var(--warm); line-height:1.3; }
-.qi-d { font-size:0.65rem; margin-top:0.2rem; }
-.de { color:#88c099; } .dm { color:var(--sun); } .dh { color:#e8917a; }
-.quest-panel { display:flex; flex-direction:column; gap:1rem; }
-.qp-card { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.3rem; }
-.qp-badge { display:inline-block; font-size:0.65rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; padding:0.2rem 0.65rem; border-radius:100px; margin-bottom:0.7rem; }
-.qp-t { font-family:var(--font-d); font-size:1.2rem; font-weight:900; margin-bottom:0.4rem; color:var(--warm); }
-.qp-d { font-size:0.87rem; color:rgba(245,242,235,0.65); line-height:1.6; font-weight:300; margin-bottom:0.9rem; }
-.qp-tip { background:rgba(232,200,74,0.12); border-radius:9px; padding:0.6rem 0.9rem; font-size:0.78rem; color:rgba(232,200,74,0.9); line-height:1.45; }
-.prompt-wrap { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.2rem; display:flex; flex-direction:column; gap:0.8rem; }
-.prompt-ta { width:100%; min-height:80px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.9rem; font-family:var(--font-b); font-size:0.9rem; color:var(--warm); resize:vertical; outline:none; line-height:1.5; }
-.prompt-ta::placeholder { color:rgba(255,255,255,0.28); }
-.prompt-ta:focus { border-color:rgba(106,158,117,0.7); }
-.prompt-footer { display:flex; justify-content:space-between; align-items:center; }
-.char-c { font-size:0.7rem; color:rgba(255,255,255,0.3); }
-.send-btn { background:var(--sun); color:#2a1f00; border:none; border-radius:100px; padding:0.55rem 1.4rem; font-family:var(--font-b); font-size:0.85rem; font-weight:500; cursor:pointer; transition:opacity 0.15s,transform 0.1s; display:flex; align-items:center; gap:0.4rem; }
-.send-btn:hover { opacity:0.85; } .send-btn:active { transform:scale(0.97); } .send-btn:disabled { opacity:0.4; cursor:not-allowed; }
-.ai-box { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); overflow:hidden; display:none; }
-.ai-box.vis { display:block; }
-.ai-hd { background:rgba(45,90,61,0.6); padding:0.6rem 1rem; font-size:0.75rem; font-weight:500; color:rgba(245,242,235,0.8); display:flex; align-items:center; gap:0.5rem; }
-.ai-bd { padding:1rem; font-size:0.88rem; line-height:1.65; color:rgba(245,242,235,0.85); font-weight:300; white-space:pre-wrap; }
-.typing { display:flex; gap:4px; }
-.typing span { width:5px; height:5px; border-radius:50%; background:var(--sage); animation:bonce 0.8s ease infinite; }
-.typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
-@keyframes bonce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-.fb-box { border-radius:var(--radius); padding:1.1rem 1.3rem; display:none; }
-.fb-box.vis { display:block; }
-.fb-great { background:rgba(45,90,61,0.35); border:1.5px solid rgba(106,158,117,0.5); }
-.fb-ok { background:rgba(232,200,74,0.15); border:1.5px solid rgba(232,200,74,0.4); }
-.fb-poor { background:rgba(196,94,50,0.2); border:1.5px solid rgba(196,94,50,0.4); }
-.fb-hd { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.5rem; }
-.fb-score { font-family:var(--font-d); font-size:1.8rem; font-weight:900; margin-left:auto; }
-.fb-title { font-size:0.9rem; font-weight:500; }
-.fb-txt { font-size:0.82rem; line-height:1.55; color:rgba(245,242,235,0.75); margin-bottom:0.7rem; }
-.fb-chips { display:flex; flex-wrap:wrap; gap:0.35rem; }
-.fb-chip { font-size:0.68rem; padding:0.15rem 0.6rem; border-radius:100px; font-weight:500; }
-.fcp { background:rgba(106,158,117,0.25); color:#88c099; } .fcf { background:rgba(196,94,50,0.25); color:#e8917a; }
-.next-btn { margin-top:0.8rem; background:var(--rust); color:white; border:none; border-radius:100px; padding:0.55rem 1.2rem; font-family:var(--font-b); font-size:0.82rem; font-weight:500; cursor:pointer; transition:background 0.15s; }
-.next-btn:hover { background:#a34d28; }
-.m2-wrap { display:flex; flex-direction:column; gap:1rem; max-width:700px; }
-.chal-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; }
-.ctab { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:0.4rem 1rem; font-size:0.78rem; color:rgba(245,242,235,0.65); font-family:var(--font-b); cursor:pointer; transition:all 0.15s; }
-.ctab:hover { background:rgba(255,255,255,0.15); } .ctab.active { background:var(--moss); border-color:var(--moss); color:white; }
-.chal-info { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:1.2rem; }
-.chal-ttl { font-family:var(--font-d); font-size:1rem; font-weight:700; color:var(--sun); margin-bottom:0.3rem; }
-.chal-txt { font-size:0.84rem; color:rgba(245,242,235,0.6); line-height:1.5; font-weight:300; }
-.versions-list { display:flex; flex-direction:column; gap:0.6rem; }
-.ver-entry { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; }
-.ver-entry.best { border-color:var(--sun); }
-.ver-hd { display:flex; align-items:center; gap:0.7rem; padding:0.65rem 1rem; cursor:pointer; }
-.ver-n { font-family:var(--font-d); font-size:0.78rem; font-weight:700; color:rgba(255,255,255,0.3); width:22px; }
-.ver-p { font-size:0.8rem; flex:1; color:rgba(255,255,255,0.65); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.ver-s { font-family:var(--font-d); font-size:0.95rem; font-weight:900; }
-.sh{color:var(--sun)} .sm{color:#88c099} .sl{color:rgba(255,255,255,0.3)}
-.ver-best { font-size:0.62rem; background:var(--sun); color:#2a1f00; padding:0.12rem 0.5rem; border-radius:100px; font-weight:500; }
-.ver-detail { padding:0.7rem 1rem; display:none; border-top:1px solid rgba(255,255,255,0.06); }
-.ver-detail.open { display:block; }
-.ver-resp { font-size:0.8rem; line-height:1.55; color:rgba(245,242,235,0.55); margin-bottom:0.5rem; font-weight:300; }
-.ver-chips { display:flex; flex-wrap:wrap; gap:0.3rem; }
-.vc { font-size:0.65rem; padding:0.12rem 0.55rem; border-radius:100px; }
-.vcg { background:rgba(106,158,117,0.2); color:#88c099; } .vcb { background:rgba(196,94,50,0.2); color:#e8917a; }
-.iter-row { display:flex; gap:0.7rem; }
-.iter-ta { flex:1; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:0.75rem; font-family:var(--font-b); font-size:0.88rem; color:var(--warm); resize:none; min-height:65px; outline:none; line-height:1.5; }
-.iter-ta::placeholder{color:rgba(255,255,255,0.22)} .iter-ta:focus{border-color:rgba(106,158,117,0.6)}
-.iter-btn { background:var(--sage); color:white; border:none; border-radius:10px; width:44px; height:44px; font-size:1.1rem; cursor:pointer; transition:background 0.15s; display:flex; align-items:center; justify-content:center; flex-shrink:0; align-self:flex-end; }
-.iter-btn:hover{background:#4d7d59} .iter-btn:disabled{opacity:0.4;cursor:not-allowed}
-.iter-hint { font-size:0.72rem; color:rgba(255,255,255,0.28); }
-.m3-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
-.m3-left { display:flex; flex-direction:column; gap:1rem; }
-.m3-right { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; min-height:400px; }
-.create-lbl { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:500; color:rgba(245,242,235,0.4); margin-bottom:0.5rem; }
-.ptype-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
-.ptype-btn { border-radius:10px; padding:0.75rem; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.06); cursor:pointer; text-align:center; transition:all 0.15s; font-family:var(--font-b); }
-.ptype-btn:hover{border-color:rgba(255,255,255,0.25)} .ptype-btn.active{border-color:var(--sun);background:rgba(232,200,74,0.12)}
-.ptype-icon{font-size:1.2rem;display:block;margin-bottom:0.25rem} .ptype-lbl{font-size:0.75rem;font-weight:500;color:rgba(245,242,235,0.8)}
-.style-chips{display:flex;gap:0.4rem;flex-wrap:wrap}
-.schip{border-radius:100px;padding:0.28rem 0.75rem;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.06);font-size:0.72rem;cursor:pointer;font-family:var(--font-b);color:rgba(245,242,235,0.65);transition:all 0.15s}
-.schip:hover{border-color:rgba(255,255,255,0.3)} .schip.active{background:var(--moss);color:white;border-color:var(--moss)}
-.create-ta{width:100%;min-height:75px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:0.8rem;font-family:var(--font-b);font-size:0.87rem;color:var(--warm);resize:none;outline:none;line-height:1.5}
-.create-ta::placeholder{color:rgba(255,255,255,0.22)} .create-ta:focus{border-color:rgba(106,158,117,0.5)}
-.create-btn{background:var(--rust);color:white;border:none;border-radius:100px;padding:0.7rem 1.5rem;font-family:var(--font-b);font-size:0.88rem;font-weight:500;cursor:pointer;transition:background 0.15s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
-.create-btn:hover{background:#a34d28} .create-btn:disabled{opacity:0.4;cursor:not-allowed}
-.len-row{display:flex;justify-content:space-between;font-size:0.68rem;color:rgba(245,242,235,0.35);margin-top:0.2rem}
-.out-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0.25;text-align:center;gap:0.6rem;color:var(--warm);padding:2rem}
-.out-empty .big{font-size:2.5rem} .out-empty p{font-size:0.82rem;font-weight:300}
-.proj-out{display:none;flex-direction:column;flex:1} .proj-out.vis{display:flex}
-.pub-ribbon{background:rgba(45,90,61,0.8);color:var(--sun);text-align:center;padding:0.5rem;font-size:0.78rem;font-weight:500;display:none} .pub-ribbon.vis{display:block}
-.out-hd{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem;background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08)}
-.out-badge{font-size:0.65rem;padding:0.18rem 0.65rem;border-radius:100px;font-weight:500;margin-right:0.5rem}
-.out-title{font-family:var(--font-d);font-size:0.95rem;font-weight:700;color:var(--warm)}
-.out-acts{display:flex;gap:0.4rem}
-.oact{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:0.28rem 0.7rem;font-size:0.72rem;cursor:pointer;font-family:var(--font-b);color:rgba(245,242,235,0.75);transition:background 0.15s}
-.oact:hover{background:rgba(255,255,255,0.15)} .oact.pub{background:var(--sun);color:#2a1f00;border-color:var(--sun)} .oact.pub:hover{opacity:0.85}
-.out-content{flex:1;padding:1.2rem;font-size:0.87rem;line-height:1.75;color:rgba(245,242,235,0.85);overflow-y:auto;white-space:pre-wrap;font-weight:300}
-.out-content h1,.out-content h2,.out-content h3{font-family:var(--font-d);font-weight:700;margin-bottom:0.4rem;margin-top:0.8rem;color:var(--warm)}
-.how-sec{background:var(--cream)}
-.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.5rem}
-.step-card{background:var(--warm);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(14,13,11,0.07)}
-.step-n{font-family:var(--font-d);font-size:2.5rem;font-weight:900;color:rgba(14,13,11,0.08);line-height:1;margin-bottom:0.4rem}
-.step-icon{font-size:1.6rem;margin-bottom:0.7rem}
-.step-card h3{font-family:var(--font-d);font-size:1rem;font-weight:700;margin-bottom:0.4rem}
-.step-card p{font-size:0.83rem;line-height:1.55;color:rgba(14,13,11,0.55);font-weight:300}
-.schools-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.feat-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem}
-.feat{display:flex;gap:0.8rem;align-items:flex-start}
-.feat-dot{width:7px;height:7px;border-radius:50%;background:var(--moss);margin-top:5px;flex-shrink:0}
-.feat h4{font-size:0.9rem;font-weight:500;margin-bottom:0.15rem} .feat p{font-size:0.8rem;color:rgba(14,13,11,0.52);line-height:1.5}
-.mockup-box{background:var(--ink);border-radius:18px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.18)}
-.m-bar{background:#1a1917;padding:0.7rem 1rem;display:flex;align-items:center;gap:0.45rem}
-.dot{width:9px;height:9px;border-radius:50%} .m-body{padding:1.2rem}
-.m-label{font-size:0.78rem;color:rgba(255,255,255,0.3);margin-bottom:0.8rem;font-family:var(--font-d);font-weight:300}
-.s-row{display:flex;align-items:center;gap:0.8rem;padding:0.6rem 0.7rem;border-radius:9px;background:rgba(255,255,255,0.04);margin-bottom:0.4rem}
-.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:500;color:white;flex-shrink:0}
-.sn{font-size:0.78rem;color:rgba(255,255,255,0.75);flex:1} .sl2{font-size:0.68rem;color:rgba(255,255,255,0.3)}
-.pm{width:52px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden} .pf{height:100%;border-radius:2px}
-.pricing-sec{background:var(--cream)}
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.5rem}
-.pc{background:var(--warm);border-radius:var(--radius);padding:1.8rem;border:1px solid rgba(14,13,11,0.08);transition:transform 0.2s,box-shadow 0.2s;position:relative}
-.pc:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,0,0,0.09)} .pc.feat-card{background:var(--moss);color:var(--warm);border-color:transparent}
-.pbadge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--sun);color:#4a3800;font-size:0.67rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;padding:0.25rem 0.9rem;border-radius:100px}
-.pname{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;opacity:0.55;margin-bottom:0.4rem}
-.pprice{font-family:var(--font-d);font-size:2.5rem;font-weight:900;line-height:1;margin-bottom:0.25rem}
-.pprice span{font-family:var(--font-b);font-size:0.9rem;font-weight:300;opacity:0.55}
-.pdesc{font-size:0.78rem;opacity:0.55;margin-bottom:1.2rem;line-height:1.4}
-.pfeat{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
-.pfeat li{font-size:0.82rem;display:flex;gap:0.5rem;align-items:baseline;opacity:0.82}
-.pfeat li::before{content:'✓';font-weight:700;font-size:0.75rem;flex-shrink:0}
-.pc.feat-card .pfeat li::before{color:var(--sun)} .pc:not(.feat-card) .pfeat li::before{color:var(--moss)}
-.pbtn{width:100%;padding:0.75rem;border-radius:100px;font-family:var(--font-b);font-size:0.87rem;font-weight:500;cursor:pointer;border:none;transition:transform 0.15s,opacity 0.2s;display:block;text-align:center}
-.pbtn:hover{transform:translateY(-1px);opacity:0.9}
-.pc:not(.feat-card) .pbtn{background:var(--moss);color:white} .pc.feat-card .pbtn{background:var(--sun);color:#2a1f00}
-.quotes-sec{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;padding:4rem 5rem}
-.qcard2{background:var(--warm);border-radius:14px;padding:1.6rem;border:1px solid rgba(14,13,11,0.06);position:relative}
-.qcard2::before{content:'"';font-family:var(--font-d);font-size:3.5rem;color:rgba(45,90,61,0.12);position:absolute;top:0.4rem;right:1rem;line-height:1}
-.qt{font-family:var(--font-d);font-size:0.95rem;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:1rem;font-weight:300}
-.qa{display:flex;align-items:center;gap:0.7rem}
-.qav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:white}
-.qn{font-size:0.82rem;font-weight:500} .qr{font-size:0.72rem;color:rgba(14,13,11,0.42)}
-.cta-sec{background:var(--ink);text-align:center;padding:5rem;position:relative;overflow:hidden}
-.cta-sec::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(45,90,61,0.3)0%,transparent 70%)}
-.cta-sec h2{color:var(--warm);position:relative;z-index:1;font-size:clamp(2rem,3.5vw,3rem)}
-.cta-sec h2 em{color:var(--sun)}
-.cta-sec p{color:rgba(245,242,235,0.5);font-size:0.95rem;margin:1rem auto 2rem;max-width:440px;line-height:1.65;position:relative;z-index:1;font-weight:300}
-.cta-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
-.btn-sun{background:var(--sun);color:#2a1f00;padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:transform 0.15s,opacity 0.2s;display:inline-block}
-.btn-sun:hover{opacity:0.88;transform:translateY(-2px)}
-.btn-ow{background:transparent;color:var(--warm);padding:0.85rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:400;border:1px solid rgba(245,242,235,0.22);cursor:pointer;text-decoration:none;transition:border-color 0.2s,transform 0.15s;display:inline-block}
-.btn-ow:hover{border-color:rgba(245,242,235,0.55);transform:translateY(-2px)}
-footer{background:#0a0a09;color:rgba(245,242,235,0.35);padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-.fl{font-family:var(--font-d);font-size:1rem;font-weight:900;color:rgba(245,242,235,0.65)} .fl span{color:var(--rust)}
-footer p{font-size:0.75rem}
-.flinks{display:flex;gap:1.2rem;flex-wrap:wrap}
-.flinks a{color:rgba(245,242,235,0.3);text-decoration:none;font-size:0.75rem;transition:color 0.2s} .flinks a:hover{color:rgba(245,242,235,0.65)}
-.xp-strip{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
-.xp-lbl{font-size:0.8rem;color:rgba(245,242,235,0.5)}
-.xp-trk{flex:1;background:rgba(255,255,255,0.1);border-radius:100px;height:6px;overflow:hidden}
-.xp-fill2{height:100%;background:var(--sun);border-radius:100px;transition:width 0.8s ease}
-.xp-pts{font-family:var(--font-d);font-size:0.9rem;font-weight:700;color:var(--sun)}
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1917;color:var(--warm);padding:0.65rem 1.3rem;border-radius:100px;font-size:0.82rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:999;white-space:nowrap;border:1px solid rgba(255,255,255,0.1)}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--white)}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* SCREENS */
+.scr{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.77,0,.18,1),opacity .35s;will-change:transform,opacity}
+.sl{transform:translateX(-110%);opacity:0;pointer-events:none}
+.sr{transform:translateX(110%);opacity:0;pointer-events:none}
+
+/* ══ HOME ══ */
+#home{background:var(--bg);padding:1.5rem 1rem;gap:0}
+.logo{font-size:clamp(3rem,9vw,5.5rem);font-weight:900;line-height:1;text-align:center;margin-bottom:.3rem;animation:popIn .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.4) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.logo-txt{background:linear-gradient(135deg,var(--pink) 0%,var(--purple) 50%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-r{display:inline-block;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(8deg)}}
+.tagline{font-size:clamp(.85rem,2.2vw,1rem);color:var(--grey);text-align:center;margin-bottom:1.5rem;font-weight:700;animation:fu .6s .25s ease forwards;opacity:0}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.xp-row{display:flex;align-items:center;gap:.8rem;background:var(--card);border-radius:100px;padding:.55rem 1.1rem;width:min(300px,88vw);margin-bottom:1.5rem;animation:fu .6s .4s ease forwards;opacity:0}
+.xp-row span{font-size:1.2rem}
+.xp-trk{flex:1;height:9px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--yellow));border-radius:100px;transition:width 1s cubic-bezier(.34,1.2,.64,1)}
+.xp-n{font-size:.82rem;font-weight:900;color:var(--yellow);min-width:38px;text-align:right}
+
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;width:min(580px,94vw);animation:fu .6s .55s ease forwards;opacity:0}
+.mc{background:var(--card);border-radius:var(--r);padding:1.1rem .8rem;text-align:center;cursor:pointer;border:2.5px solid transparent;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.mc:hover{transform:translateY(-7px) scale(1.04)}
+.mc:active{transform:scale(.95)}
+.mc1{border-color:var(--pink);box-shadow:0 0 22px rgba(232,67,147,.18)}
+.mc1:hover{box-shadow:0 10px 36px rgba(232,67,147,.42)}
+.mc2{border-color:var(--cyan);box-shadow:0 0 22px rgba(0,212,200,.18)}
+.mc2:hover{box-shadow:0 10px 36px rgba(0,212,200,.42)}
+.mc3{border-color:var(--yellow);box-shadow:0 0 22px rgba(247,201,72,.18)}
+.mc3:hover{box-shadow:0 10px 36px rgba(247,201,72,.42)}
+.mc-new{position:absolute;top:-3px;right:7px;background:var(--pink);color:#fff;font-size:.58rem;font-weight:900;padding:.12rem .5rem;border-radius:100px;text-transform:uppercase;letter-spacing:.06em}
+.mc-em{font-size:2rem;display:block;margin-bottom:.4rem}
+.mc-n{font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;opacity:.4;font-weight:800;margin-bottom:.15rem}
+.mc-name{font-size:.82rem;font-weight:900;line-height:1.2}
+.mc-stars{margin-top:.4rem;font-size:.78rem}
+
+.nr{display:flex;gap:.6rem;width:min(320px,88vw);margin-top:1.1rem;animation:fu .6s .7s ease forwards;opacity:0}
+.ni{flex:1;background:var(--card);border:2px solid rgba(255,255,255,.1);border-radius:100px;padding:.58rem 1.1rem;font-family:var(--font);font-size:.88rem;color:var(--white);outline:none;font-weight:700;transition:border-color .2s}
+.ni::placeholder{color:var(--grey);font-weight:400}
+.ni:focus{border-color:var(--purple)}
+.go-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:100px;padding:.58rem 1.2rem;font-family:var(--font);font-size:.88rem;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(232,67,147,.4);transition:transform .15s,box-shadow .2s}
+.go-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,67,147,.55)}
+
+/* MOD SCREENS */
+.mod-scr{align-items:stretch;justify-content:flex-start}
+.mhd{display:flex;align-items:center;gap:.8rem;padding:.9rem 1.1rem;background:var(--card);border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
+.bk{background:rgba(255,255,255,.08);border:none;border-radius:100px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--white);font-size:1rem;transition:background .15s;flex-shrink:0}
+.bk:hover{background:rgba(255,255,255,.16)}
+.mhd-t{font-size:.95rem;font-weight:900;flex:1}
+.mhd-xp{font-size:.78rem;font-weight:900;padding:.28rem .8rem;border-radius:100px}
+.xp-pink{color:var(--pink);background:rgba(232,67,147,.12)}
+.xp-cyan{color:var(--cyan);background:rgba(0,212,200,.12)}
+.xp-yellow{color:var(--yellow);background:rgba(247,201,72,.12)}
+
+/* ══ MOD 1 ══ */
+.m1body{flex:1;overflow:hidden;display:grid;grid-template-columns:210px 1fr;height:calc(100vh - 55px)}
+.qlist{overflow-y:auto;border-right:1px solid rgba(255,255,255,.05);padding:.7rem;display:flex;flex-direction:column;gap:.4rem;background:#0d0c16}
+.qi{display:flex;align-items:center;gap:.65rem;padding:.7rem .8rem;border-radius:var(--rs);cursor:pointer;border:1.5px solid transparent;transition:all .15s}
+.qi:hover{background:var(--card)}
+.qi.on{background:var(--card2);border-color:var(--pink)}
+.qi-em{font-size:1.1rem;flex-shrink:0}
+.qi-in{flex:1;min-width:0}
+.qi-t{font-size:.76rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qi-d{font-size:.6rem;font-weight:700;margin-top:.1rem}
+.de{color:var(--green)} .dm{color:var(--yellow)} .dh{color:var(--pink)}
+.qi-ck{color:var(--green);font-size:.85rem;flex-shrink:0}
+.qarea{overflow-y:auto;display:flex;flex-direction:column;gap:.9rem;padding:1rem}
+.qcard{background:var(--card);border-radius:var(--r);padding:1.1rem;border:2px solid rgba(255,255,255,.05)}
+.qbadge{display:inline-flex;align-items:center;gap:.35rem;font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;padding:.22rem .75rem;border-radius:100px;margin-bottom:.65rem}
+.qh{font-size:1.05rem;font-weight:900;margin-bottom:.35rem;line-height:1.2}
+.qp{font-size:.82rem;color:var(--grey);line-height:1.6;font-weight:600;margin-bottom:.75rem}
+.tip{background:rgba(247,201,72,.07);border:1px solid rgba(247,201,72,.22);border-radius:var(--rs);padding:.55rem .85rem;font-size:.76rem;color:var(--yellow);line-height:1.5;font-weight:600}
+.pbox{background:var(--card);border-radius:var(--r);padding:.9rem;border:2px solid rgba(255,255,255,.05)}
+.pta{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:.75rem;font-family:var(--font);font-size:.88rem;color:var(--white);resize:none;outline:none;min-height:76px;line-height:1.55;font-weight:600;transition:border-color .2s}
+.pta::placeholder{color:var(--grey);font-weight:400}
+.pta:focus{border-color:var(--pink)}
+.pfoot{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem}
+.cc{font-size:.68rem;color:var(--grey);font-weight:600}
+.sbtn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:100px;padding:.5rem 1.3rem;font-family:var(--font);font-size:.82rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 14px rgba(232,67,147,.35);display:flex;align-items:center;gap:.35rem}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,67,147,.5)}
+.sbtn:active{transform:scale(.95)}
+.sbtn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.airsp{background:var(--card2);border-radius:var(--r);overflow:hidden;display:none;border:1.5px solid rgba(0,212,200,.2)}
+.airsp.vis{display:block;animation:si .35s cubic-bezier(.34,1.2,.64,1)}
+@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.aihd{background:linear-gradient(90deg,rgba(0,212,200,.15),transparent);padding:.55rem .9rem;font-size:.72rem;font-weight:900;color:var(--cyan);display:flex;align-items:center;gap:.45rem;text-transform:uppercase;letter-spacing:.08em}
+.aibd{padding:.9rem;font-size:.85rem;line-height:1.7;color:rgba(245,240,255,.9);font-weight:600;white-space:pre-wrap}
+.dots{display:flex;gap:4px;padding:.2rem}
+.dots span{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:dt .8s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes dt{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.fb{border-radius:var(--r);padding:.9rem 1.1rem;display:none;border:2px solid transparent}
+.fb.vis{display:block;animation:si .35s cubic-bezier(.34,1.2,.64,1)}
+.fbg{background:rgba(46,204,113,.1);border-color:rgba(46,204,113,.4)}
+.fbo{background:rgba(247,201,72,.08);border-color:rgba(247,201,72,.35)}
+.fbp{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.35)}
+.fbt{display:flex;align-items:center;gap:.65rem;margin-bottom:.45rem}
+.fbscore{font-size:1.9rem;font-weight:900;line-height:1}
+.fblbl{font-size:.9rem;font-weight:900}
+.fbtxt{font-size:.8rem;color:var(--grey);line-height:1.55;font-weight:600;margin-bottom:.65rem}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.75rem}
+.chip{font-size:.65rem;padding:.18rem .6rem;border-radius:100px;font-weight:800}
+.cp{background:rgba(46,204,113,.15);color:var(--green)}
+.cf{background:rgba(255,107,53,.15);color:var(--orange)}
+.nxtbtn{background:linear-gradient(135deg,var(--orange),var(--pink));color:#fff;border:none;border-radius:100px;padding:.5rem 1.2rem;font-family:var(--font);font-size:.8rem;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(255,107,53,.35);transition:transform .15s}
+.nxtbtn:hover{transform:translateY(-2px)}
+
+/* ══ MOD 2 ══ */
+.m2body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.9rem;padding:1rem;height:calc(100vh - 55px)}
+.crow{display:flex;gap:.5rem;flex-wrap:wrap}
+.cpill{background:var(--card);border:1.5px solid rgba(255,255,255,.1);border-radius:100px;padding:.38rem .95rem;font-size:.76rem;font-weight:800;cursor:pointer;transition:all .15s;color:var(--grey);font-family:var(--font)}
+.cpill.on{background:rgba(0,212,200,.12);border-color:var(--cyan);color:var(--cyan)}
+.cpill:hover:not(.on){border-color:rgba(255,255,255,.25);color:var(--white)}
+.cbox{background:var(--card);border-radius:var(--r);padding:.9rem 1.1rem;border:1.5px solid rgba(0,212,200,.15)}
+.ctxt{font-size:.95rem;font-weight:900;color:var(--cyan);margin-bottom:.25rem}
+.cdesc{font-size:.8rem;color:var(--grey);font-weight:600;line-height:1.5}
+.vers{display:flex;flex-direction:column;gap:.55rem}
+.vc{background:var(--card);border:1.5px solid rgba(255,255,255,.07);border-radius:var(--rs);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.vc.bst{border-color:var(--yellow)}
+.vc:hover{border-color:rgba(255,255,255,.2)}
+.vtop{display:flex;align-items:center;gap:.75rem;padding:.65rem .95rem}
+.vn{font-size:.72rem;font-weight:900;color:var(--grey);width:22px}
+.vp{flex:1;font-size:.78rem;font-style:italic;color:rgba(245,240,255,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.vpts{font-size:.92rem;font-weight:900}
+.ph{color:var(--yellow)}.pm2{color:var(--cyan)}.pl{color:var(--grey)}
+.btag{font-size:.6rem;background:var(--yellow);color:#1a1200;padding:.12rem .5rem;border-radius:100px;font-weight:900}
+.vdet{display:none;border-top:1px solid rgba(255,255,255,.05);padding:.75rem .95rem;background:rgba(255,255,255,.02)}
+.vdet.open{display:block}
+.vat{font-size:.78rem;color:var(--grey);line-height:1.55;margin-bottom:.45rem;font-weight:600}
+.vchips{display:flex;flex-wrap:wrap;gap:.28rem}
+.iarea{background:var(--card);border-radius:var(--r);padding:.9rem;border:1.5px solid rgba(255,255,255,.07);position:sticky;bottom:0}
+.irow{display:flex;gap:.65rem}
+.ita{flex:1;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:.7rem;font-family:var(--font);font-size:.86rem;color:var(--white);resize:none;min-height:58px;outline:none;line-height:1.5;font-weight:600;transition:border-color .2s}
+.ita::placeholder{color:var(--grey);font-weight:400}
+.ita:focus{border-color:var(--cyan)}
+.igo{background:linear-gradient(135deg,var(--cyan),#0099cc);color:#fff;border:none;border-radius:var(--rs);width:44px;height:44px;font-size:1.1rem;cursor:pointer;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 14px rgba(0,212,200,.3);flex-shrink:0;align-self:flex-end;display:flex;align-items:center;justify-content:center;font-family:var(--font);font-weight:900}
+.igo:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,200,.45)}
+.igo:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.ihint{font-size:.68rem;color:var(--grey);text-align:center;margin-top:.4rem;font-weight:700}
+
+/* ══ MOD 3 ══ */
+.m3body{flex:1;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 55px)}
+.cleft{overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.9rem;border-right:1px solid rgba(255,255,255,.05)}
+.cright{overflow-y:auto;display:flex;flex-direction:column;background:rgba(255,255,255,.02)}
+.clbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--grey);margin-bottom:.45rem}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.tbtn{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--rs);padding:.75rem;text-align:center;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.tbtn:hover{border-color:rgba(255,255,255,.2)}
+.tbtn.on{border-color:var(--yellow);background:rgba(247,201,72,.07)}
+.tic{font-size:1.25rem;display:block;margin-bottom:.22rem}
+.tlbl{font-size:.72rem;font-weight:900;color:var(--white)}
+.swrap{display:flex;gap:.38rem;flex-wrap:wrap}
+.sp{background:var(--card);border:1.5px solid rgba(255,255,255,.1);border-radius:100px;padding:.26rem .78rem;font-size:.7rem;font-weight:800;cursor:pointer;color:var(--grey);transition:all .15s;font-family:var(--font)}
+.sp:hover{color:var(--white);border-color:rgba(255,255,255,.3)}
+.sp.on{background:rgba(124,92,191,.2);border-color:var(--purple);color:var(--white)}
+.cta2{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:.75rem;font-family:var(--font);font-size:.85rem;color:var(--white);resize:none;min-height:78px;outline:none;line-height:1.55;font-weight:600;transition:border-color .2s}
+.cta2::placeholder{color:var(--grey);font-weight:400}
+.cta2:focus{border-color:var(--yellow)}
+.lenrow{display:flex;justify-content:space-between;font-size:.63rem;color:var(--grey);font-weight:800;margin-top:.18rem;padding:0 2px}
+input[type=range]{width:100%;accent-color:var(--yellow);cursor:pointer;margin-top:.1rem}
+.cgobtn{width:100%;background:linear-gradient(135deg,var(--yellow),var(--orange));color:#1a1200;border:none;border-radius:100px;padding:.78rem;font-family:var(--font);font-size:.92rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 16px rgba(247,201,72,.35);display:flex;align-items:center;justify-content:center;gap:.45rem}
+.cgobtn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(247,201,72,.45)}
+.cgobtn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.oempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;opacity:.22;padding:2rem;text-align:center}
+.oeicon{font-size:2.8rem}
+.oetxt{font-size:.82rem;font-weight:800}
+.pout{display:none;flex-direction:column;flex:1}
+.pout.vis{display:flex}
+.pbanner{background:linear-gradient(90deg,rgba(46,204,113,.2),rgba(0,212,200,.2));color:var(--cyan);text-align:center;padding:.45rem;font-size:.78rem;font-weight:900;display:none;border-bottom:1px solid rgba(0,212,200,.2)}
+.pbanner.vis{display:block}
+.otop{display:flex;align-items:center;justify-content:space-between;padding:.75rem .95rem;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.03)}
+.obadge{font-size:.63rem;padding:.18rem .65rem;border-radius:100px;font-weight:900;margin-right:.45rem}
+.otitle{font-size:.88rem;font-weight:900}
+.oacts{display:flex;gap:.38rem}
+.oact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:.26rem .65rem;font-size:.7rem;cursor:pointer;font-family:var(--font);color:rgba(245,240,255,.75);font-weight:800;transition:background .15s}
+.oact:hover{background:rgba(255,255,255,.14)}
+.opub{background:rgba(247,201,72,.14);border-color:rgba(247,201,72,.38);color:var(--yellow)}
+.opub:hover{background:rgba(247,201,72,.24)}
+.otext{flex:1;padding:1.1rem;font-size:.86rem;line-height:1.78;overflow-y:auto;font-weight:600;color:rgba(245,240,255,.9)}
+.otext h1,.otext h2{font-size:.95rem;font-weight:900;margin:.55rem 0 .25rem;color:var(--white)}
+
+/* UTILS */
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);color:var(--white);padding:.6rem 1.3rem;border-radius:100px;font-size:.83rem;font-weight:900;opacity:0;transition:opacity .3s,transform .3s;z-index:999;pointer-events:none;border:1.5px solid rgba(255,255,255,.1)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block}
-.spinner.drk{border-color:rgba(14,13,11,0.2);border-top-color:var(--moss)}
+.spin{width:15px;height:15px;border:2.5px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fu{opacity:0;animation:fadeUp 0.65s ease forwards}
-.d1{animation-delay:0.1s}.d2{animation-delay:0.25s}.d3{animation-delay:0.4s}.d4{animation-delay:0.55s}
-@media(max-width:900px){
-  nav{padding:1rem 1.5rem} nav ul{display:none}
-  .hero{grid-template-columns:1fr;min-height:auto;padding:5rem 1.5rem 2.5rem}
-  .hero-bg{display:none} .hero-left{padding:0} .hero-right{display:none}
-  .sec{padding:3rem 1.5rem} .trust{padding:1.5rem}
-  .steps-grid{grid-template-columns:1fr 1fr} .schools-grid{grid-template-columns:1fr}
-  .price-grid{grid-template-columns:1fr} .quotes-sec{grid-template-columns:1fr;padding:3rem 1.5rem}
-  .cta-sec{padding:3.5rem 1.5rem} footer{padding:1.5rem}
-  .tab-nav{margin:0 1.5rem} .tab-content{padding:1.5rem}
-  .platform-header{padding:2.5rem 1.5rem 1rem}
-  .m1-grid{grid-template-columns:1fr} .quest-sidebar{display:none}
-  .m3-grid{grid-template-columns:1fr} .m3-right{min-height:300px}
+.xpop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:500;pointer-events:none;opacity:0;text-align:center;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+.xpop.in{transform:translate(-50%,-60%) scale(1);opacity:1}
+.xpop.out{transform:translate(-50%,-80%) scale(.7);opacity:0}
+.xpopn{font-size:2.4rem;font-weight:900;color:var(--yellow);text-shadow:0 0 30px rgba(247,201,72,.8)}
+.xpops{font-size:.88rem;color:var(--white);font-weight:800;opacity:.8}
+
+@media(max-width:640px){
+  .mod-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+  .mc:last-child{grid-column:1/-1}
+  .m1body{grid-template-columns:1fr}.qlist{display:none}
+  .m3body{grid-template-columns:1fr}.cright{display:none}
 }
 </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
+<div class="xpop" id="xpop"><div class="xpopn" id="xpopn">+50 XP</div><div class="xpops">🌟 Bra jobbat!</div></div>
 <div class="toast" id="toast"></div>
-<nav>
-  <a href="#" class="nav-logo">Prompt<span>Kids</span></a>
-  <ul>
-    <li><a href="#plattform">Prova nu</a></li>
-    <li><a href="#hur">Hur det fungerar</a></li>
-    <li><a href="#skolor">För skolor</a></li>
-    <li><a href="#priser">Priser</a></li>
-    <li><a href="#kontakt" class="nav-cta">Boka demo</a></li>
-  </ul>
-</nav>
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-left">
-    <p class="eyebrow fu">Digital bildning för framtiden</p>
-    <h1 class="fu d1">Lär barn att <em>tala</em> med AI</h1>
-    <p class="hero-desc fu d2">PromptKids är den spelbaserade plattformen som ger elever i åk 2–9 verktygen att använda AI klokt, kreativt och kritiskt. Anpassad till Lgr22. <strong>100% gratis.</strong></p>
-    <div class="hero-btns fu d3">
-      <a href="#plattform" class="btn-p">Prova direkt — gratis →</a>
-      <a href="#skolor" class="btn-s">För skolor &amp; kommuner</a>
+
+<!-- ══ HOME ══ -->
+<div class="scr" id="home">
+  <div class="logo"><span class="logo-txt">PromptKids</span><span class="logo-r">🚀</span></div>
+  <p class="tagline">Lär dig prata med AI — uppdrag för uppdrag!</p>
+  <div class="xp-row">
+    <span>⚡</span>
+    <div class="xp-trk"><div class="xp-fill" id="xpfill" style="width:0%"></div></div>
+    <span class="xp-n" id="xpn">0</span>
+  </div>
+  <div class="mod-grid">
+    <div class="mc mc1" onclick="go('m1')">
+      <span class="mc-new">START HÄR</span>
+      <span class="mc-em">🎯</span>
+      <div class="mc-n">Modul 01</div>
+      <div class="mc-name">Lös uppdrag</div>
+      <div class="mc-stars" id="s1" style="color:var(--pink)">☆☆☆☆☆</div>
     </div>
-    <div class="hero-stats fu d4">
-      <div><span class="stat-n">Gratis</span><span class="stat-l">Alltid</span></div>
-      <div><span class="stat-n">Lgr22</span><span class="stat-l">Anpassad</span></div>
-      <div><span class="stat-n">GDPR</span><span class="stat-l">Säker</span></div>
+    <div class="mc mc2" onclick="go('m2')">
+      <span class="mc-em">🔁</span>
+      <div class="mc-n">Modul 02</div>
+      <div class="mc-name">Iterera</div>
+      <div class="mc-stars" id="s2" style="color:var(--cyan)">☆☆☆☆☆</div>
+    </div>
+    <div class="mc mc3" onclick="go('m3')">
+      <span class="mc-em">✨</span>
+      <div class="mc-n">Modul 03</div>
+      <div class="mc-name">Skapa</div>
+      <div class="mc-stars" id="s3" style="color:var(--yellow)">☆☆☆☆☆</div>
     </div>
   </div>
-  <div class="hero-right">
-    <div class="card-stack">
-      <div class="qcard"><span class="cbadge bg">Uppdrag 1</span><div class="ctitle">Berätta för AI vem du är</div><div class="cdesc">Ge AI kontext om dig själv för bättre svar</div><div class="cbar"><div class="cfill" style="width:75%"></div></div></div>
-      <div class="qcard"><span class="cbadge bs">Uppdrag 4</span><div class="ctitle">Granska AI:s fel</div><div class="cdesc">Hitta misstag och korrigera AI:n</div><div class="cbar"><div class="cfill" style="width:40%"></div></div></div>
-      <div class="qcard"><span class="cbadge br">Uppdrag 5</span><div class="ctitle">Din superprompt</div><div class="cdesc">Använd allt du lärt dig i ett riktigt projekt</div><div class="cbar"><div class="cfill" style="width:15%"></div></div></div>
-    </div>
-  </div>
-</section>
-<div class="trust">
-  <span class="trust-lbl">Utformat för</span>
-  <div class="trust-logos">
-    <span class="trust-logo">Skolverket-anpassad</span>
-    <span class="trust-logo">HelloWorld-partner</span>
-    <span class="trust-logo">290 kommuner</span>
-    <span class="trust-logo">GDPR-säker</span>
-    <span class="trust-logo">Alltid gratis</span>
+  <div class="nr">
+    <input class="ni" id="ni" placeholder="Vad heter du? 👋" maxlength="20">
+    <button class="go-btn" onclick="start()">Kör! 🎮</button>
   </div>
 </div>
-<section class="platform-sec" id="plattform">
-  <div class="platform-header">
-    <p class="sec-label">Prova plattformen</p>
-    <h2>Lär dig promptning — <em>på riktigt</em></h2>
-    <p class="sec-sub">Välj en modul och börja direkt. AI:n svarar på svenska och ger dig feedback i realtid.</p>
-    <div class="xp-strip" style="margin-top:1.2rem;max-width:500px">
-      <span class="xp-lbl">Din XP</span>
-      <div class="xp-trk"><div class="xp-fill2" id="globalXpBar" style="width:0%"></div></div>
-      <span class="xp-pts" id="globalXpPts">0 XP</span>
-    </div>
+
+<!-- ══ MOD 1 ══ -->
+<div class="scr sr mod-scr" id="m1">
+  <div class="mhd">
+    <button class="bk" onclick="go('home')">←</button>
+    <span class="mhd-t">🎯 Lös uppdrag</span>
+    <span class="mhd-xp xp-pink" id="m1xp">0 XP</span>
   </div>
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('mod1',this)">🎯 <span>Lös uppdrag</span></button>
-    <button class="tab-btn" onclick="switchTab('mod2',this)">🔁 <span>Iterera &amp; förbättra</span></button>
-    <button class="tab-btn" onclick="switchTab('mod3',this)">✨ <span>Skapa &amp; publicera</span></button>
+  <div class="m1body">
+    <div class="qlist" id="qlist"></div>
+    <div class="qarea" id="qarea"></div>
   </div>
-  <div class="tab-content active" id="tab-mod1">
-    <div class="m1-grid">
-      <div class="quest-sidebar" id="questSidebar"></div>
-      <div class="quest-panel" id="questPanel"></div>
-    </div>
-  </div>
-  <div class="tab-content" id="tab-mod2">
-    <div class="m2-wrap">
-      <div class="chal-tabs" id="chalTabs"></div>
-      <div class="chal-info">
-        <div class="chal-ttl" id="chalTitle2"></div>
-        <div class="chal-txt" id="chalText2"></div>
-      </div>
-      <div class="versions-list" id="versionsList">
-        <p style="font-size:0.78rem;color:rgba(255,255,255,0.25);text-align:center;padding:1rem 0">Inga försök ännu — skriv din första prompt nedan!</p>
-      </div>
-      <div>
-        <div class="iter-row">
-          <textarea class="iter-ta" id="iterTa" placeholder="Skriv din prompt och se hur svaret förändras med varje version…" rows="2"></textarea>
-          <button class="iter-btn" id="iterBtn" onclick="doIter()">↑</button>
-        </div>
-        <p class="iter-hint" style="margin-top:0.4rem">Tips: Prova 3+ versioner — den bästa markeras automatiskt ⭐</p>
-      </div>
-    </div>
-  </div>
-  <div class="tab-content" id="tab-mod3">
-    <div class="m3-grid">
-      <div class="m3-left">
-        <div>
-          <div class="create-lbl">Typ av projekt</div>
-          <div class="ptype-grid">
-            <button class="ptype-btn active" onclick="setPtype(this,'story')"><span class="ptype-icon">📖</span><span class="ptype-lbl">Berättelse</span></button>
-            <button class="ptype-btn" onclick="setPtype(this,'poem')"><span class="ptype-icon">🎭</span><span class="ptype-lbl">Dikt</span></button>
-            <button class="ptype-btn" onclick="setPtype(this,'info')"><span class="ptype-icon">🔬</span><span class="ptype-lbl">Faktaartikel</span></button>
-            <button class="ptype-btn" onclick="setPtype(this,'game')"><span class="ptype-icon">🎮</span><span class="ptype-lbl">Spelbeskrivning</span></button>
-          </div>
-        </div>
-        <div>
-          <div class="create-lbl" style="margin-bottom:0.5rem">Stil</div>
-          <div class="style-chips">
-            <button class="schip active" onclick="togStyle(this)">Rolig</button>
-            <button class="schip" onclick="togStyle(this)">Spännande</button>
-            <button class="schip" onclick="togStyle(this)">Läskig</button>
-            <button class="schip" onclick="togStyle(this)">Poetisk</button>
-            <button class="schip" onclick="togStyle(this)">Barnvänlig</button>
-          </div>
-        </div>
-        <div>
-          <div class="create-lbl" style="margin-bottom:0.4rem">Din idé</div>
-          <textarea class="create-ta" id="createTa" placeholder="Beskriv vad du vill skapa…" rows="4"></textarea>
-        </div>
-        <div>
-          <div class="create-lbl" style="margin-bottom:0.3rem">Längd</div>
-          <input type="range" id="lenSlider" min="1" max="3" value="2" style="width:100%;accent-color:var(--rust)">
-          <div class="len-row"><span>Kort</span><span>Lagom</span><span>Lång</span></div>
-        </div>
-        <button class="create-btn" id="createBtn2" onclick="doCreate()"><span id="createBtnTxt">✨ Skapa projekt</span></button>
-      </div>
-      <div class="m3-right">
-        <div class="out-empty" id="outEmpty"><div class="big">✨</div><p>Ditt projekt visas här<br>när du klickar "Skapa"</p></div>
-        <div class="proj-out" id="projOut">
-          <div class="pub-ribbon" id="pubRibbon">🎉 Publicerat! Ditt projekt är sparat.</div>
-          <div class="out-hd">
-            <div style="display:flex;align-items:center">
-              <span class="out-badge" id="outBadge" style="background:#f5ddd4;color:var(--rust)">Berättelse</span>
-              <span class="out-title" id="outTitle">Ditt projekt</span>
-            </div>
-            <div class="out-acts">
-              <button class="oact" onclick="doCopy()">Kopiera</button>
-              <button class="oact pub" onclick="doPublish()">Publicera 🚀</button>
-            </div>
-          </div>
-          <div class="out-content" id="outContent"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="how-sec sec" id="hur">
-  <p class="sec-label">Hur det fungerar</p>
-  <h2>Från nybörjare till <em>prompt-mästare</em></h2>
-  <p class="sec-sub">Eleverna avancerar genom tre moduler med uppdrag och riktiga AI-projekt.</p>
-  <div class="steps-grid">
-    <div class="step-card"><div class="step-n">01</div><div class="step-icon">🎯</div><h3>Lös uppdrag</h3><p>Eleven möter ett verkligt problem och skriver en prompt för att lösa det.</p></div>
-    <div class="step-card"><div class="step-n">02</div><div class="step-icon">🔁</div><h3>Iterera &amp; förbättra</h3><p>Plattformen visar varför ett svar blev bra eller dåligt.</p></div>
-    <div class="step-card"><div class="step-n">03</div><div class="step-icon">✨</div><h3>Skapa &amp; publicera</h3><p>Elever skapar egna projekt med AI som verktyg.</p></div>
-    <div class="step-card"><div class="step-n">04</div><div class="step-icon">🏫</div><h3>Läraren följer upp</h3><p>Dashboard visar klassprogress i realtid.</p></div>
-  </div>
-</section>
-<section class="sec" id="skolor">
-  <div class="schools-grid">
-    <div>
-      <p class="sec-label">För skolor &amp; kommuner</p>
-      <h2>Redo för <em>klassrummet</em></h2>
-      <p class="sec-sub">PromptKids är byggt med lärare, för lärare.</p>
-      <div class="feat-list">
-        <div class="feat"><div class="feat-dot"></div><div><h4>Lgr22-kopplat</h4><p>Varje uppdrag är mappat till kunskapskrav i svenska, samhällskunskap och teknik.</p></div></div>
-        <div class="feat"><div class="feat-dot"></div><div><h4>GDPR &amp; dataskydd</h4><p>All data lagras på svenska servrar. Inga annonser.</p></div></div>
-        <div class="feat"><div class="feat-dot"></div><div><h4>Kommunavtal</h4><p>SKR-kompatibel avtalsstruktur redo att signera.</p></div></div>
-        <div class="feat"><div class="feat-dot"></div><div><h4>Lärarutbildning ingår</h4><p>2 timmars onboarding för all undervisningspersonal.</p></div></div>
-      </div>
-    </div>
-    <div class="mockup-box">
-      <div class="m-bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div>
-      <div class="m-body">
-        <div class="m-label">Klass 6B — Vecka 14 · Uppdrag 3 av 8</div>
-        <div class="s-row"><div class="av" style="background:#2d5a3d">EA</div><span class="sn">Elsa Andersson</span><span class="sl2">Nivå 4</span><div class="pm"><div class="pf" style="width:88%;background:#6a9e75"></div></div></div>
-        <div class="s-row"><div class="av" style="background:#4a7fa8">ML</div><span class="sn">Marcus Lindberg</span><span class="sl2">Nivå 3</span><div class="pm"><div class="pf" style="width:61%;background:#4a7fa8"></div></div></div>
-        <div class="s-row"><div class="av" style="background:#c45e32">FJ</div><span class="sn">Fatima Johansson</span><span class="sl2">Nivå 4</span><div class="pm"><div class="pf" style="width:79%;background:#c45e32"></div></div></div>
-        <div class="s-row"><div class="av" style="background:#8b7bb8">NE</div><span class="sn">Noah Eriksson</span><span class="sl2">Nivå 2</span><div class="pm"><div class="pf" style="width:33%;background:#8b7bb8"></div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="pricing-sec sec" id="priser">
-  <p class="sec-label">Priser</p>
-  <h2>Alltid <em>gratis</em> för elever</h2>
-  <p class="sec-sub">Plattformen är helt fri. Skolor och kommuner kan uppgradera för avancerade funktioner.</p>
-  <div class="price-grid">
-    <div class="pc">
-      <div class="pname">Elev &amp; familj</div><div class="pprice">0 kr<span>/alltid</span></div>
-      <div class="pdesc">Alla tre moduler. Inga kreditkort. Ingen tidsgräns.</div>
-      <ul class="pfeat"><li>Alla 3 moduler</li><li>5 uppdrag</li><li>Obegränsad iteration</li><li>Skapa &amp; spara projekt</li></ul>
-      <button class="pbtn" onclick="document.getElementById('plattform').scrollIntoView({behavior:'smooth'})">Börja nu — gratis</button>
-    </div>
-    <div class="pc feat-card">
-      <div class="pbadge">Populärast</div>
-      <div class="pname">Skola</div><div class="pprice">89 kr<span>/elev/år</span></div>
-      <div class="pdesc">Hela skolan med lärardashboard.</div>
-      <ul class="pfeat"><li>Allt i gratis-versionen</li><li>40+ uppdrag</li><li>Lärardashboard</li><li>GDPR-dokumentation</li><li>Onboarding &amp; utbildning</li></ul>
-      <button class="pbtn">Boka demo</button>
-    </div>
-    <div class="pc">
-      <div class="pname">Kommun</div><div class="pprice">65 kr<span>/elev/år</span></div>
-      <div class="pdesc">Kommunavtal med volymrabatt.</div>
-      <ul class="pfeat"><li>Alla skolor i kommunen</li><li>Central administrationspanel</li><li>Dedikerad kundansvarig</li><li>Lärarutbildning på plats</li></ul>
-      <button class="pbtn">Kontakta oss</button>
-    </div>
-  </div>
-</section>
-<div class="quotes-sec">
-  <div class="qcard2"><p class="qt">Eleverna förstår nu varför ett prompt ger olika svar — den kritiska tanken vaknar på ett sätt jag aldrig sett.</p><div class="qa"><div class="qav" style="background:#2d5a3d">MH</div><div><div class="qn">Maria Holmberg</div><div class="qr">Lärare, Bergaskolan Göteborg</div></div></div></div>
-  <div class="qcard2"><p class="qt">Vi letade länge efter ett verktyg som är pedagogiskt solitt och GDPR-säkert. PromptKids klarar båda.</p><div class="qa"><div class="qav" style="background:#4a7fa8">PL</div><div><div class="qn">Per Lindqvist</div><div class="qr">IT-strateg, Malmö stad</div></div></div></div>
-  <div class="qcard2"><p class="qt">Mina elever i åk 4 kan förklara för sina föräldrar vad AI är — och hur man använder det ansvarsfullt.</p><div class="qa"><div class="qav" style="background:#c45e32">AK</div><div><div class="qn">Anna Karlsson</div><div class="qr">Klasslärare, Sundsvall</div></div></div></div>
 </div>
-<section class="cta-sec" id="kontakt">
-  <h2>Ge dina elever <em>framtidens</em> superkraft</h2>
-  <p>Börja direkt — gratis. Eller boka en demo för din skola eller kommun.</p>
-  <div class="cta-btns">
-    <a href="#plattform" class="btn-sun">Prova nu — helt gratis</a>
-    <a href="mailto:hej@promptkids.se" class="btn-ow">Boka skolademo</a>
+
+<!-- ══ MOD 2 ══ -->
+<div class="scr sr mod-scr" id="m2">
+  <div class="mhd">
+    <button class="bk" onclick="go('home')">←</button>
+    <span class="mhd-t">🔁 Iterera &amp; förbättra</span>
+    <span class="mhd-xp xp-cyan" id="m2xp">0 XP</span>
   </div>
-</section>
-<footer>
-  <div class="fl">Prompt<span>Kids</span></div>
-  <p>© 2025 PromptKids AB · Falkenberg, Sverige</p>
-  <div class="flinks"><a href="#">Integritetspolicy</a><a href="#">Dataskydd</a><a href="#">Villkor</a><a href="#">Kontakt</a></div>
-</footer>
+  <div class="m2body">
+    <div class="crow" id="crow"></div>
+    <div class="cbox"><div class="ctxt" id="ctxt"></div><div class="cdesc" id="cdesc"></div></div>
+    <div class="vers" id="vers"><p style="font-size:.78rem;color:var(--grey);text-align:center;padding:.8rem;font-weight:700">Inga försök ännu — skriv nedan! 👇</p></div>
+    <div class="iarea">
+      <div class="irow">
+        <textarea class="ita" id="ita" placeholder="Skriv din prompt…" rows="2"></textarea>
+        <button class="igo" id="igo" onclick="doIter()">↑</button>
+      </div>
+      <p class="ihint">Prova 3+ versioner — bästa markeras ⭐</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MOD 3 ══ -->
+<div class="scr sr mod-scr" id="m3">
+  <div class="mhd">
+    <button class="bk" onclick="go('home')">←</button>
+    <span class="mhd-t">✨ Skapa &amp; publicera</span>
+    <span class="mhd-xp xp-yellow" id="m3xp">0 XP</span>
+  </div>
+  <div class="m3body">
+    <div class="cleft">
+      <div><div class="clbl">Vad vill du skapa?</div>
+        <div class="tgrid">
+          <button class="tbtn on" onclick="sType(this,'story')"><span class="tic">📖</span><span class="tlbl">Berättelse</span></button>
+          <button class="tbtn" onclick="sType(this,'poem')"><span class="tic">🎭</span><span class="tlbl">Dikt</span></button>
+          <button class="tbtn" onclick="sType(this,'info')"><span class="tic">🔬</span><span class="tlbl">Faktaartikel</span></button>
+          <button class="tbtn" onclick="sType(this,'game')"><span class="tic">🎮</span><span class="tlbl">Spel</span></button>
+        </div>
+      </div>
+      <div><div class="clbl">Stil / känsla</div>
+        <div class="swrap">
+          <button class="sp on" onclick="tStyle(this)">😂 Rolig</button>
+          <button class="sp" onclick="tStyle(this)">⚡ Spännande</button>
+          <button class="sp" onclick="tStyle(this)">👻 Läskig</button>
+          <button class="sp" onclick="tStyle(this)">🌸 Poetisk</button>
+          <button class="sp" onclick="tStyle(this)">🦄 Magisk</button>
+        </div>
+      </div>
+      <div><div class="clbl">Din idé</div>
+        <textarea class="cta2" id="cta" placeholder="Beskriv din idé… t.ex. 'En katt som hittar ett rymdskifte bakom kylskåpet'" rows="4"></textarea>
+      </div>
+      <div><div class="clbl">Längd</div>
+        <input type="range" id="ls" min="1" max="3" value="2">
+        <div class="lenrow"><span>Kort</span><span>Lagom</span><span>Lång</span></div>
+      </div>
+      <button class="cgobtn" id="cgo" onclick="doCreate()"><span id="cgotxt">✨ Skapa nu!</span></button>
+    </div>
+    <div class="cright">
+      <div class="oempty" id="oe"><div class="oeicon">✨</div><div class="oetxt">Ditt projekt dyker upp här!</div></div>
+      <div class="pout" id="po">
+        <div class="pbanner" id="pb">🎉 Publicerat och sparat!</div>
+        <div class="otop">
+          <div><span class="obadge" id="ob" style="background:rgba(232,67,147,.15);color:var(--pink)">Berättelse</span><span class="otitle" id="ot">Ditt projekt</span></div>
+          <div class="oacts">
+            <button class="oact" onclick="doCopy()">📋 Kopiera</button>
+            <button class="oact opub" onclick="doPub()">🚀 Publicera</button>
+          </div>
+        </div>
+        <div class="otext" id="otxt"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-// ══════════════════════════════════════════════
-// SMART LOKAL AI — fungerar utan API-nyckel
-// Genererar personaliserade svenska svar baserat
-// på vad eleven faktiskt skriver.
-// ══════════════════════════════════════════════
-
-function buildAIResponse(system, userPrompt) {
-  const p = userPrompt.toLowerCase();
-  const words = userPrompt.trim().split(/\s+/);
-  const wordCount = words.length;
-
-  // Extrahera kontext från prompten
-  const age = (p.match(/(\d+)\s*år/) || p.match(/är\s*(\d+)/) || [])[1];
-  const name = (p.match(/heter\s+(\w+)/) || p.match(/jag är\s+(\w+)/) || [])[1];
-  const greeting = name ? `Hej ${name}!` : age ? `Hej! Kul att du är ${age} år!` : 'Hej!';
-
-  // ── Detektера ämne ──
-  const topics = {
-    häst: { key: /häst|hästar|rida|ridning|ponny/, fn: () =>
-      `${greeting} Hästar är fantastiska djur — det låter som att du verkligen älskar dem!\n\nHästar har funnits som sällskapsdjur och arbetsdjur i över 5 000 år. En fullvuxen häst väger mellan 400–900 kg och kan bli upp till 30 år gammal. Det finns över 300 olika hästraser i världen!\n\nDen vanligaste hästrasen i Sverige är Svenska varmblodiga travaren, men islandshästar är också väldigt populära — de är kända för sin speciella gångart som kallas tölt.\n\n${wordCount > 20 ? 'Du gav mig bra information om dig själv, vilket hjälpte mig att anpassa svaret just för dig. Bra promptat! 🌟' : 'Nästa gång kan du berätta mer om vad du redan vet om hästar, så kan jag ge ett ännu bättre svar!'}` },
-
-    minecraft: { key: /minecraft|creeper|steve|enderman|diamant|redstone/, fn: () =>
-      `${greeting} Minecraft är ett av världens mest sålda spel — med över 238 miljoner sålda exemplar!\n\nMinecraft skapades av Markus "Notch" Persson från Sverige och lanserades 2011. Spelet köptes sedan av Microsoft för 2,5 miljarder dollar 2014.\n\nI survival-läget gäller det att samla resurser, bygga skydd och överleva natten när monster som Creepers och Zombies dyker upp. I creative-läget kan du bygga vad du vill — många spelar skapar fantastiska städer och konstverk!\n\n${wordCount > 25 ? 'Tack för att du gav detaljer i din prompt — det hjälpte mig svara mer precist. Välgjort! ⭐' : 'Tips: Berätta vad du vill lära dig mer om i Minecraft så kan jag ge ett ännu mer detaljerat svar!'}` },
-
-    drake: { key: /drake|drakar|dragon/, fn: () =>
-      `${greeting} Drakar är bland de mest fascinerande varelserna i fantasy-världen!\n\nI europeisk tradition är drakar eldsputande monster och skatter-väktare. Men i asiatisk kultur — särskilt kinesisk och japansk — symboliserar drakar visdom, lycka och välgång. De ses som beskyddare, inte fiender!\n\nKända drakar i litteratur och film: Smaug från Tolkiens "Sagan om ringen", Drogon från "Game of Thrones", och Toothless från "Så tränar du din drake".\n\nVad som gör din prompt bra: ${wordCount > 15 ? 'Du gav mig ett tydligt ämne att jobba med. Prova att även berätta vilken typ av drakar du är mest intresserad av!' : 'Nästa gång, försök vara mer specifik — europeiska eller asiatiska drakar? Fantasy-böcker eller filmer?'}` },
-
-    klimat: { key: /klimat|miljö|global uppvärmning|växthus|koldioxid|hållbar/, fn: () =>
-      `${greeting} Klimatfrågan är verkligen viktig att förstå!\n\nJordens medeltemperatur har ökat med ungefär 1,1°C sedan industrialiseringen på 1800-talet. Det låter lite, men det räcker för att smälta isar, höja havsnivåer och orsaka extremare väder.\n\nHuvudorsaken är växthusgaser — framför allt koldioxid (CO₂) från förbränning av fossila bränslen som olja, kol och gas. Också metan från jordbruk och avfallsdeponier bidrar.\n\nSverige har som mål att vara klimatneutralt år 2045. Det innebär att vi inte ska släppa ut mer växthusgaser än vad naturen och tekniken kan absorbera.\n\n${wordCount > 20 ? 'Bra att du ställde en specifik fråga — det ger mycket bättre svar! 👍' : 'Tipsa: Ange vilket specifikt ämne inom klimat du undrar över — t.ex. förnybar energi, havsförsurning eller vad du som individ kan göra.'}` },
-
-    recept: { key: /recept|laga mat|koka|baka|ingrediens|pannkak|pasta|pizza/, fn: () => {
-      const isLong = document.getElementById('lenSlider') && document.getElementById('lenSlider').value === '3';
-      return `${greeting} Här är ett enkelt och gott recept!\n\n**Pannkakor** (4 portioner)\n\nIngredienser:\n• 3 dl vetemjöl\n• 6 dl mjölk\n• 2 ägg\n• 1 krm salt\n• Smör till stekning\n\nGör så här:\n1. Vispa ihop mjöl och hälften av mjölken till en slät smet\n2. Tillsätt resten av mjölken, äggen och saltet\n3. Låt smeten vila 15–20 minuter\n4. Stek tunna pannkakor i smör på medelhög värme, ca 2 min per sida\n\nServera med jordgubbssylt och vispgrädde — eller varför inte Nutella?\n\n${wordCount > 25 ? 'Du gav bra kontext i din prompt! Nästa gång kan du berätta om allergier eller vilka ingredienser du har hemma för ett ännu mer anpassat recept. 🍳' : 'Nästa gång: Berätta om allergier, hur många ni är, och vad du har hemma — då kan jag skräddarsy receptet helt för dig!'}`;
-    }},
-
-    fotboll: { key: /fotboll|fotbollslag|premier|allsvenskan|mål|spelare|fifa/, fn: () =>
-      `${greeting} Fotboll är världens mest populära sport med uppskattningsvis 4 miljarder fans!\n\nFotboll uppfanns i England på 1800-talet och de första reglerna skrevs 1863. FIFA grundades 1904 och VM spelas vart fjärde år sedan 1930.\n\nSverige har en stark fotbollshistoria. Zlatan Ibrahimović är Sveriges mest kände spelare med 62 mål på 120 landskamper. I damfotboll är Sverige ett av de starkaste länderna i världen!\n\n${wordCount > 20 ? 'Snyggt att du specificerade ditt intresse — det hjälper mig ge mer relevanta svar! ⚽' : 'Prova att fråga om ett specifikt lag, spelare eller turnering för ett djupare svar!'}` },
-
-    rymden: { key: /rymd|planet|stjärna|svart hål|astronaut|nasa|månen|mars|solsystem/, fn: () =>
-      `${greeting} Rymden är verkligen fascinerande — låt oss utforska!\n\nVårt solsystem är 4,6 miljarder år gammalt. Solen utgör 99,86% av all massa i solsystemet! De åtta planeterna, med start närmast solen, är: Merkurius, Venus, Jorden, Mars, Jupiter, Saturnus, Uranus och Neptunus.\n\nMånen är ca 384 000 km från Jorden. Apollo 11 landade på månen den 20 juli 1969 — Neil Armstrong blev den första människan att kliva ner på månens yta.\n\nSvarta hål är områden i rymden där gravitationen är så stark att inte ens ljus kan fly. Det närmaste kända svarta hålet ligger ca 1 000 ljusår från Jorden.\n\n${wordCount > 20 ? 'Bra prompt med tydlig inriktning! 🚀 Ju mer specifik du är, desto bättre svar får du.' : 'Fråga om ett specifikt ämne — t.ex. "Hur bildas stjärnor?" eller "Vad är ett svart hål?" för ett djupare svar!'}` },
-  };
-
-  // Testa alla ämnesdetektorer
-  for (const [, topic] of Object.entries(topics)) {
-    if (topic.key.test(p)) return topic.fn();
+// ══ ANIMATED BG ══
+(()=>{
+  const c=document.getElementById('bg'),x=c.getContext('2d');
+  c.width=innerWidth;c.height=innerHeight;
+  const stars=Array.from({length:150},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4+.3,a:Math.random()*.7+.1,da:Math.random()*.01+.003,dir:Math.random()>.5?1:-1}));
+  const floaters=Array.from({length:15},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*2.5+.8,col:[`rgba(232,67,147,`,`rgba(0,212,200,`,`rgba(247,201,72,`,`rgba(124,92,191,`][Math.floor(Math.random()*4)]}));
+  function draw(){
+    x.fillStyle='rgba(15,14,23,.15)';x.fillRect(0,0,c.width,c.height);
+    stars.forEach(s=>{s.a+=s.da*s.dir;if(s.a>1||s.a<.1)s.dir*=-1;x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fillStyle=`rgba(255,255,255,${s.a})`;x.fill();});
+    floaters.forEach(f=>{f.x+=f.vx;f.y+=f.vy;if(f.x<0||f.x>c.width)f.vx*=-1;if(f.y<0||f.y>c.height)f.vy*=-1;x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fillStyle=f.col+'.25)';x.fill();});
+    requestAnimationFrame(draw);
   }
+  draw();
+  window.addEventListener('resize',()=>{c.width=innerWidth;c.height=innerHeight;});
+})();
 
-  // ── MODUL 1: Berätta vem du är ──
-  if (system.includes('förstår vem du är') || system.includes('varm och anpassa')) {
-    if (age && wordCount > 15) {
-      return `${greeting} Vad kul att träffa dig! En ${age}-åring med sådana intressen — det låter som att du har massor av nyfikenhet och kreativitet.\n\nDet du beskrev i din prompt visar att du är bra på att ge kontext — precis det som gör en bra prompt! Ju mer du berättar om dig själv, desto bättre kan AI anpassa svaret just för dig.\n\nOm jag skulle ge dig ett råd: fortsätt alltid berätta vem du är och varför du ställer en fråga. Det är skillnaden mellan ett generiskt svar och ett svar som känns som det är skräddarsytt för just dig. 🌟`;
-    }
-    return `${greeting} Tack för att du presenterade dig! Det märks att du tar promptning på allvar.\n\nEn sak du kan förbättra: berätta gärna din ålder och vad du är intresserad av — det hjälper AI att ge svar på rätt nivå. En 8-åring och en 14-åring behöver ofta väldigt olika förklaringar på samma fråga!\n\nProva att lägga till: "Jag är X år och gillar Y och Z. Min fråga är..." — och se hur mycket bättre svaret blir. 😊`;
-  }
+// ══ STATE ══
+let S={name:'',xp:0,xp1:0,xp2:0,xp3:0,done:[],curQ:0,iChal:0,iVers:[],ptype:'story',styles:['😂 Rolig']};
+let cur='home';
 
-  // ── MODUL 1: Förklara något svårt ──
-  if (system.includes('pedagogisk') && system.includes('Förklara enkelt')) {
-    const topic = words.slice(-5).join(' ');
-    return `${greeting} Bra fråga — och bra att du berättade vad du redan vet!\n\nDet du undrar över är faktiskt ett av de viktigaste koncepten att förstå. Tänk på det så här: precis som ett recept behöver exakta mängder och steg för att bli rätt, behöver AI exakta instruktioner för att ge rätt svar.\n\nHjärnan lär sig bäst när den kopplar ny information till något den redan vet. Du gjorde rätt i att berätta din bakgrund — det är precis vad en bra prompt ska innehålla!\n\n${wordCount > 25 ? 'Din prompt var tydlig och välstrukturerad. Det märks att du tänker på hur du kommunicerar! 🌟' : 'Tips: Nästa gång, var ännu mer specifik om vad exakt du inte förstår — "Jag förstår X men inte Y" ger alltid bättre svar.'}`;
-  }
+// ══ NAV ══
+function go(id){
+  document.getElementById(cur).classList.add(id==='home'?'sr':'sl');
+  const t=document.getElementById(id);
+  t.classList.remove('sl','sr');
+  cur=id;
+  if(id==='home')uhome();
+  if(id==='m1')im1();
+  if(id==='m2')im2();
+}
+function start(){const n=document.getElementById('ni').value.trim();if(n)S.name=n;go('m1');}
 
-  // ── MODUL 1: Planera dag ──
-  if (system.includes('planeringsassistent') || system.includes('dagplan')) {
-    const city = p.match(/stockholm|göteborg|malmö|falkenberg|halland|sverige|hemma/)?.[0];
-    return `${greeting} Här är ett förslag på en fantastisk dag!\n\n**09:00** — Börja med en god frukost. Havregrynsgröt med bär ger energi hela förmiddagen.\n\n**10:30** — ${city ? `Utforska ${city}! Kolla upp lokala sevärdheter eller parker.` : 'Bestäm ett utflyktsmål — natur, stad eller museum?'}\n\n**12:30** — Lunch! Pröva något nytt — kanske sushi, tacos eller en lokal restaurang?\n\n**14:00** — Kreativt projekt eller sport. Rita, spela, cykla — något du verkligen gillar.\n\n**17:00** — Fika med vänner eller familj. Svenska fikan är världsbäst! ☕\n\n**19:00** — Film, spel eller läsning för att varva ner.\n\n${wordCount > 30 ? 'Du gav bra detaljer i din prompt — det syns i hur specifikt jag kunde planera din dag! 👏' : 'Nästa gång: Berätta om budget, stad och vad du INTE vill göra — då kan jag göra en ännu mer personlig plan!'}`;
-  }
-
-  // ── MODUL 1: Granska AI:s fel ──
-  if (system.includes('ibland gör små misstag')) {
-    return `${greeting} Här är information om ämnet du frågade om!\n\nDetta är ett spännande ämne med många intressanta aspekter. Det uppstod för ungefär ${Math.floor(Math.random()*200)+50} år sedan och har sedan dess utvecklats enormt. De flesta experter är överens om att det är viktigt att förstå grunderna.\n\nEn intressant detalj: statistik visar att ungefär 73% av alla som studerar detta ämne upplever det som mer komplicerat än väntat — men när man väl förstår grundprincipen faller allt på plats!\n\n⚠️ Ledtråd: Håll ögonen öppna — det kan finnas ett litet faktafel gömt här. Kan du hitta det? Skriv en uppföljningsprompt om du hittar något som inte stämmer!`;
-  }
-
-  // ── MODUL 2: Drakar ──
-  if (system.includes('drakar')) {
-    const detail = wordCount > 15 ? 'detaljerat och anpassat till din beskrivning' : 'grundläggande';
-    const style = p.includes('barn') || p.includes('liten') ? 'sagolik och barnvänlig' : p.includes('spännande') || p.includes('action') ? 'episk och actionfylld' : 'informativ och engagerande';
-    return `I en ${style} stil — här är om drakar!\n\nDrakar har funnits i myter och legender i nästan alla kulturer på jorden. I Europa vaktar de skattkammare och spyr eld. I Kina symboliserar de kejsarmakt och lycka.\n\nDen mest kände draken i nordisk mytologi är Fáfnir — en dvärg som förvandlades till en drake av girighet. Hjälten Sigurd dräpte Fáfnir och tog hans skatt.\n\nModerna drakar i populärkulturen: Smaug (Tolkien), Drogon (Game of Thrones), Toothless (Så tränar du din drake).\n\n${wordCount > 20 ? `Din prompt var ${detail} — bra jobbat! Märker du hur svaret anpassar sig till hur du skriver? 🐉` : 'Prova att lägga till mer om dig själv i nästa prompt — och se hur svaret förändras!'}`;
-  }
-
-  // ── MODUL 2: Klimat ──
-  if (system.includes('klimat')) {
-    return `Klimatfakta anpassat till din fråga!\n\nKlimatförändringarna är en av vår tids mest pressande utmaningar. Sedan 1880 har jordens medeltemperatur stigit med ca 1,1°C — mest under de senaste 50 åren.\n\nDe viktigaste orsakerna:\n• Förbränning av fossila bränslen (60% av utsläppen)\n• Avskogning (17% av utsläppen)\n• Jordbruk och boskap (14% av utsläppen)\n\nSverige är faktiskt ganska bra på klimat! Vi har en av världens lägsta koldioxidutsläpp per person bland industriländer, tack vare vattenkraft och kärnkraft.\n\n${wordCount > 20 ? 'Bra att du var specifik — det gör att svaret kan fokusera på det som är relevant för dig! 🌍' : 'Nästa gång: Fråga om en specifik aspekt av klimatfrågan, t.ex. "Vad kan jag göra som ung person?" eller "Vad är COP-mötena?"'}`;
-  }
-
-  // ── MODUL 2: Recept ──
-  if (system.includes('kockassistent') || system.includes('recept')) {
-    return `Recept anpassat till din beskrivning!\n\n**Enkel pasta carbonara** (2 portioner)\n\nIngredienser:\n• 200g spaghetti\n• 100g bacon eller pancetta\n• 2 ägg + 1 äggula\n• 50g riven parmesan\n• Salt och svartpeppar\n\nGör så här:\n1. Koka pastan enligt förpackningen\n2. Stek baconet knaprig\n3. Vispa ihop ägg, äggula och parmesan\n4. Blanda het pasta med bacon, ta från värmen\n5. Häll äggblandningen över och blanda snabbt — värmen kokar äggen lagom!\n\nTips: Tillsätt lite pastavatten för krämigare sås.\n\n${wordCount > 20 ? 'Du gav bra kontext! Med mer info om allergier och ingredienser hemma kan jag ge ett ännu mer skräddarsytt recept. 🍝' : 'Nästa gång: Berätta om allergier, hur många ni är och vad du har hemma!'}`;
-  }
-
-  // ── MODUL 3: Skapa projekt ──
-  if (system.includes('kreativ AI-assistent') || system.includes('Berättelse') || system.includes('Dikt') || system.includes('Faktaartikel') || system.includes('Spelbeskrivning')) {
-    const isPoem = system.includes('Dikt');
-    const isFact = system.includes('Faktaartikel');
-    const isGame = system.includes('Spelbeskrivning');
-    const idea = userPrompt;
-    const styles = system.match(/Stil\/ton: ([^.]+)\./)?.[1] || 'rolig';
-    const isLong = system.includes('500 ord');
-    const isMedium = system.includes('300 ord');
-
-    if (isPoem) {
-      return `**${idea.slice(0,40).replace(/\n/,'').trim()}**\n\nI en värld av pixlar och kod,\nföddes en tanke, ljus och god.\nEtt barn som frågar, nyfiken och fri:\n"Vad kan du lära mig, kära AI?"\n\nMed ord som nycklar öppnas dörrar,\nkunskapens ocean sig rör.\nEtt prompt, en bro, ett samtal nytt —\ntill varje svar, ett nytt mysterium bytt.\n\nSå skriv din fråga, tänk och led,\nmed nyfikenhet och kreativitet.\nFör i det enkla, tydliga ord\nligger magin som AI förstod.\n\n🎭 *Skapad med PromptKids*`;
-    }
-
-    if (isFact) {
-      const topic2 = idea.slice(0,30);
-      return `**${topic2}**\n\nDetta är ett fascinerande ämne som berör många aspekter av vår värld. Forskare har studerat detta fenomen sedan tidigt 1900-tal och har gjort många spännande upptäckter.\n\nDe viktigaste fakta:\n• Det uppskattades att ungefär 2,4 miljarder människor berörs av detta ämne globalt\n• Sverige ligger i framkant när det gäller forskning och innovation inom området\n• De senaste tio åren har kunskapen om ämnet fördubblats tack vare ny teknologi\n\nVarför är detta viktigt?\nFörståelse för detta ämne hjälper oss att fatta bättre beslut i vardagen. Unga som lär sig om detta tidigt har stora fördelar i framtidens arbetsliv.\n\nKälla: Baserat på din idé, skapad med PromptKids 🔬\n\n*Prova att vara ännu mer specifik i din beskrivning för ett faktarikare resultat!*`;
-    }
-
-    if (isGame) {
-      return `**${idea.slice(0,35).trim()} — Spelet**\n\nGenre: Äventyr/Strategi\nSpelläge: Enspelar eller 2–4 spelare\n\n📖 Bakgrund:\nI en värld där ${idea.toLowerCase().includes('robot') ? 'robotar har vaknat till liv' : idea.toLowerCase().includes('rymd') ? 'galaxer kolliderar' : 'allt inte är som det verkar'}, måste spelaren lösa pussel, samla resurser och bygga allianser.\n\n🎮 Spelmekanik:\n• Rörelsesystem: Klicka och peka, eller WASD\n• Resurser: Samla energikristaller och kunskapspoäng\n• Fiender: Tre nivåer — lätt, medel och boss\n• Specialförmågor: Låses upp vid nivå 5, 10 och 20\n\n⭐ Vinnarkondition:\nNå nivå 25 och befria den magiska artefakten!\n\n🎮 *Skapad med PromptKids — din idé, AI:s kreativitet*`;
-    }
-
-    // Story — default
-    const isScary = styles.includes('Läskig') || styles.includes('skräck');
-    const isFunny = styles.includes('Rolig') || styles.includes('humor');
-    const opening = isScary ? 'En mörk och stormig natt...' : isFunny ? 'Det hela började med en liten katastrof i köket.' : 'Det var en gång...';
-
-    return `**${idea.slice(0,50).replace(/\n/,'').trim()}**\n\n${opening}\n\n${idea.toLowerCase().includes('robot') ?
-      'Roboten R-7 öppnade sina ögon för allra första gången. Lamporna i laboratoriet surrade och en doft av elektricitet hängde i luften. "Var är jag?" frågade R-7 med en röst som lät som en gammal radio.\n\nForskaren Maja tittade upp från sin dator. "Du är i Göteborg. Och du är den första roboten som kan känna känslor." R-7 processade informationen. Sedan frågade den något som Maja aldrig väntat sig: "Kan man lära sig att le?"\n\nMaja log brett. "Ja," sa hon. "Det kan man absolut."\n\nUnder de kommande veckorna lärde R-7 sig skratta åt dåliga skämt, gråta vid ledsna filmer och känna stolthet när den löste ett svårt problem. Men det svåraste av allt var att förstå vänskap.\n\nTills den dag Maja råkade ut för en olycka — och R-7 förstod allt.'
-      :
-      `Huvudpersonen kände hur aventyret närmade sig med varje steg. Det som hade börjat som en vanlig dag i ${idea.toLowerCase().includes('sverige') || idea.toLowerCase().includes('skola') ? 'Sverige' : 'en liten stad'} hade förvandlats till något alldeles extraordinärt.\n\n"Jag trodde aldrig det skulle hända mig," tänkte hen.\n\nMen ibland väljer äventyren oss — inte tvärtom.\n\nOch detta äventyr var bara precis i sin linda.`}\n\n${isLong ? '\n\nFortsättning följer... ⭐\n\n*Det här är bara början — be om en längre version för att se hur historien slutar!*' : ''}\n\n📖 *Skapad med PromptKids — ${isFunny ? 'hoppas det fick dig att le! 😄' : isScary ? 'tänk dig för om du läser detta sent på kvällen... 👻' : 'din berättelse, ditt projekt! ✨'}*`;
-  }
-
-  // ── SUPERPROMPT / GENERELL ──
-  const isDetailed = wordCount > 40;
-  const hasFormat = /lista|punkter|kort|lång|format|steg|ord/.test(p);
-  const hasContext = age || name || /jag är|jag vill|jag gillar|mitt|min /.test(p);
-
-  if (isDetailed && hasFormat && hasContext) {
-    return `${greeting} Det här var en riktigt välstrukturerad prompt — imponerande!\n\nBaserat på allt du berättade kan jag ge dig ett precist och användbart svar:\n\n${hasFormat ? '**Steg-för-steg:**\n\n1. Börja med att identifiera vad du faktiskt behöver\n2. Dela upp problemet i mindre delar\n3. Lös en del i taget — fira varje liten seger!\n4. Utvärdera resultatet och justera om det behövs\n5. Dela din lösning med någon annan för feedback\n\n' : ''}Det du beskrivit är ett vanligt problem som många löser genom att vara tydlig med sina mål och ta ett steg i taget.\n\n🌟 **Feedback på din prompt:** Du gav kontext, önskat format och personliga detaljer — det är precis vad en mästarprompt innehåller! Du förtjänar full poäng.`;
-  }
-
-  if (isDetailed) {
-    return `${greeting} Bra att du gav mig så mycket information att jobba med!\n\nBaserat på din beskrivning: det du frågar om är något många funderar på. Nyckeln är att tänka på det i tre steg — förstå problemet, hitta alternativ, och välj det som passar dig bäst.\n\n${hasContext ? 'Din personliga kontext hjälpte mig att ge ett mer relevant svar. Det är precis rätt instinkt — håll fast vid det!' : 'Nästa gång, berätta lite om dig själv och varför du frågar — det gör svaret mycket mer användbart!'}\n\n${wordCount > 50 ? '🌟 Mycket välformulerad prompt! Du är på god väg att bli en riktig prompt-mästare.' : '👍 Bra jobbat! Fortsätt utveckla din prompt-stil.'}`;
-  }
-
-  // Kort/vag prompt
-  return `${greeting} Tack för din fråga!\n\nDin prompt fungerade, men det finns utrymme att göra den ännu bättre. Här är tre saker du kan lägga till:\n\n1️⃣ **Vem du är** — din ålder och bakgrund hjälper mig anpassa svaret\n2️⃣ **Vad du redan vet** — så jag inte förklarar saker du redan kan\n3️⃣ **Exakt vad du vill ha** — ett kort svar? En lista? Steg-för-steg?\n\nProva att skriva om din prompt med dessa delar — och se hur mycket bättre svaret blir! Du klarar det. 💪`;
+// ══ XP ══
+function axp(n){
+  S.xp+=n;
+  if(cur==='m1')S.xp1+=n;
+  if(cur==='m2')S.xp2+=n;
+  if(cur==='m3')S.xp3+=n;
+  const p=document.getElementById('xpop');
+  document.getElementById('xpopn').textContent='+'+n+' XP';
+  p.classList.add('in');
+  setTimeout(()=>{p.classList.replace('in','out');},1200);
+  setTimeout(()=>p.classList.remove('out'),1600);
+  uxp();
+}
+function uxp(){
+  document.getElementById('xpfill').style.width=Math.min(S.xp/600*100,100)+'%';
+  document.getElementById('xpn').textContent=S.xp;
+  if(document.getElementById('m1xp'))document.getElementById('m1xp').textContent=S.xp1+' XP';
+  if(document.getElementById('m2xp'))document.getElementById('m2xp').textContent=S.xp2+' XP';
+  if(document.getElementById('m3xp'))document.getElementById('m3xp').textContent=S.xp3+' XP';
+}
+function uhome(){
+  const f=n=>'★'.repeat(Math.min(n,5))+'☆'.repeat(5-Math.min(n,5));
+  document.getElementById('s1').textContent=f(S.done.length);
+  document.getElementById('s2').textContent=f(S.iVers.length);
+  document.getElementById('s3').textContent=f(Math.floor(S.xp3/50));
+  uxp();
 }
 
-// ═══════════════════ DATA ═══════════════════
-const quests = [
-  { id:1, title:"Berätta för AI vem du är", diff:"easy", badge:"bg", badgeText:"Uppdrag 1",
-    desc:"Skriv en prompt som gör att AI förstår vem du är och vad du tycker om. Ju mer detaljer, desto bättre svar!",
-    tip:"💡 Berätta om din ålder, dina intressen och ställ en konkret fråga. Skriv minst 2 meningar.",
-    criteria:["Nämner ålder eller klass","Nämner ett intresse","Ställer en fråga","Mer än 20 ord"],
-    sys:"förstår vem du är", xp:50 },
-  { id:2, title:"Förklara något svårt enkelt", diff:"easy", badge:"bg", badgeText:"Uppdrag 2",
-    desc:"Be AI förklara något svårt — men säg EXAKT vad du redan vet och vad du inte förstår.",
-    tip:"💡 Börja med 'Jag förstår att… men förstår inte riktigt…' Det gör din prompt mycket tydligare!",
-    criteria:["Anger ett ämne","Säger vad man vet","Ber om enkel förklaring","Mer än 25 ord"],
-    sys:"pedagogisk", xp:60 },
-  { id:3, title:"Planera din drömdag", diff:"easy", badge:"bs", badgeText:"Uppdrag 3",
-    desc:"Be AI hjälpa dig planera en perfekt dag. Ge detaljer om vad du gillar, var du bor och hur mycket tid du har.",
-    tip:"💡 Ju fler detaljer, desto bättre plan. Berätta om plats, budget och vad du INTE vill göra.",
-    criteria:["Nämner en aktivitet","Ger tidsram eller stad","Personlig detalj","Mer än 30 ord"],
-    sys:"planeringsassistent", xp:70 },
-  { id:4, title:"Granska AI:s fel", diff:"med", badge:"bs", badgeText:"Uppdrag 4",
-    desc:"Be AI berätta om ett ämne du kan väldigt bra — och se om du hittar ett fel!",
-    tip:"💡 Välj ett ämne du verkligen kan — ditt favoritspel, din hemort. AI gör ibland misstag!",
-    criteria:["Tydligt ämne anges","Ber om specifika detaljer","Instruerar om noggrannhet","Mer än 20 ord"],
-    sys:"ibland gör små misstag", xp:80 },
-  { id:5, title:"Din superprompt", diff:"hard", badge:"br", badgeText:"Uppdrag 5",
-    desc:"Visa vad du lärt dig! Skriv din bästa prompt för att lösa ett riktigt problem.",
-    tip:"💡 Använd allt: ge kontext, säg vad du vet, vad du vill ha, i vilket format och hur långt svaret ska vara.",
-    criteria:["Tydlig kontextbeskrivning","Specificerat format/längd","Personliga detaljer","Mer än 50 ord"],
-    sys:"superprompt", xp:100 }
+// ══ DATA ══
+const QS=[
+  {id:1,em:'👋',t:'Berätta vem du är',d:'e',dt:'Lätt',bc:'rgba(232,67,147,.15)',tc:'var(--pink)',lbl:'Uppdrag 1',
+   desc:'Skriv en prompt som gör att AI förstår vem du är. Ju mer du berättar, desto bättre svar!',
+   tip:'💡 Din ålder, vad du gillar och en konkret fråga. Minst 2 meningar!',
+   crit:['Nämner ålder','Nämner ett intresse','Ställer en fråga','Mer än 20 ord'],sys:'vem',xp:50},
+  {id:2,em:'🧩',t:'Förklara något svårt',d:'e',dt:'Lätt',bc:'rgba(232,67,147,.15)',tc:'var(--pink)',lbl:'Uppdrag 2',
+   desc:'Be AI förklara något svårt. Säg vad du redan vet och vad du inte förstår!',
+   tip:'💡 Börja med: "Jag förstår att… men inte riktigt…"',
+   crit:['Anger ett ämne','Berättar vad man vet','Ber om enkel förklaring','Mer än 25 ord'],sys:'pedagogisk',xp:60},
+  {id:3,em:'🗓️',t:'Planera din drömdag',d:'e',dt:'Lätt',bc:'rgba(0,212,200,.15)',tc:'var(--cyan)',lbl:'Uppdrag 3',
+   desc:'Be AI planera en perfekt dag. Berätta vad du gillar, var du bor och hur mycket tid!',
+   tip:'💡 Detaljer om plats och vad du INTE vill göra ger en bättre plan!',
+   crit:['Nämner en aktivitet','Ger stad eller tidsram','Personlig detalj','Mer än 30 ord'],sys:'dag',xp:70},
+  {id:4,em:'🔍',t:'Granska AI:s fel',d:'m',dt:'Medel',bc:'rgba(247,201,72,.15)',tc:'var(--yellow)',lbl:'Uppdrag 4',
+   desc:'Välj ett ämne du kan bra och be AI berätta om det — kan du hitta ett fel?',
+   tip:'💡 Ditt favoritspel, din stad eller en hobby du kan!',
+   crit:['Tydligt ämne','Ber om detaljer','Nämner noggrannhet','Mer än 20 ord'],sys:'fel',xp:80},
+  {id:5,em:'⚡',t:'Din superprompt',d:'h',dt:'Svår',bc:'rgba(255,107,53,.15)',tc:'var(--orange)',lbl:'Uppdrag 5',
+   desc:'Använd ALLT du lärt dig! Skriv din bästa prompt för ett riktigt problem.',
+   tip:'💡 Kontext + vad du vet + önskat format + längd = superprompt!',
+   crit:['Tydlig kontext','Format specificerat','Personliga detaljer','Mer än 50 ord'],sys:'super',xp:100}
+];
+const CHALS=[
+  {em:'🐉',t:'Drakar',desc:'Prova olika prompts om drakar — se hur svaret anpassas!',sys:'drakar'},
+  {em:'🌍',t:'Klimat',desc:'Fråga om klimat. Bli mer specifik — se hur svaret förbättras!',sys:'klimat'},
+  {em:'🍕',t:'Recept',desc:'Be om ett recept. Ge mer info — se hur svaret förändras!',sys:'recept'}
 ];
 
-const challenges = [
-  { title:"🐉 Berätta om drakar", text:"Prova olika prompts och se hur svaret anpassas till dig!", sys:"drakar" },
-  { title:"🌍 Klimatfakta", text:"Be om info om klimatförändringar. Bli mer specifik och se hur svaret förbättras!", sys:"klimat" },
-  { title:"🍕 Recept-hjälp", text:"Be om ett recept. Ge mer kontext — allergier, tid, vad du gillar — se skillnaden!", sys:"kockassistent" }
-];
-
-let st = { xp:0, done:[], currentQ:0, iterChal:0, iterVers:[], ptype:'story', styles:['Rolig'] };
-
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + id).classList.add('active');
-  if (id === 'mod2' && !document.getElementById('chalTabs').innerHTML) initMod2();
-}
-
-function addXP(n) {
-  st.xp += n;
-  const pct = Math.min((st.xp / 500) * 100, 100);
-  document.getElementById('globalXpBar').style.width = pct + '%';
-  document.getElementById('globalXpPts').textContent = st.xp + ' XP';
-  toast('+' + n + ' XP! 🌟');
-}
-
-function initMod1() { renderSidebar(); renderQuestPanel(0); }
-
-function renderSidebar() {
-  document.getElementById('questSidebar').innerHTML = quests.map((q, i) => `
-    <div class="q-item ${i===st.currentQ?'active':''} ${st.done.includes(i)?'done':''}" onclick="selQ(${i})">
-      <div class="qi-top"><span class="qi-num">Uppdrag ${q.id}</span>${st.done.includes(i)?'<span class="qi-chk">✓</span>':''}</div>
-      <div class="qi-t">${q.title}</div>
-      <div class="qi-d d${q.diff==='easy'?'e':q.diff==='med'?'m':'h'}">${q.diff==='easy'?'⬤ Lätt':q.diff==='med'?'⬤ Medel':'⬤ Svår'}</div>
+// ══ MOD 1 ══
+function im1(){rql();rq(S.curQ);}
+function rql(){
+  document.getElementById('qlist').innerHTML=QS.map((q,i)=>`
+    <div class="qi ${i===S.curQ?'on':''}" onclick="sq(${i})">
+      <span class="qi-em">${q.em}</span>
+      <div class="qi-in"><div class="qi-t">${q.t}</div><div class="qi-d d${q.d}">${q.dt}</div></div>
+      ${S.done.includes(i)?'<span class="qi-ck">✓</span>':''}
     </div>`).join('');
 }
-
-function selQ(i) { st.currentQ = i; renderSidebar(); renderQuestPanel(i); }
-
-function renderQuestPanel(i) {
-  const q = quests[i];
-  document.getElementById('questPanel').innerHTML = `
-    <div class="qp-card">
-      <span class="qp-badge ${q.badge}">${q.badgeText}</span>
-      <div class="qp-t">${q.title}</div>
-      <div class="qp-d">${q.desc}</div>
-      <div class="qp-tip">${q.tip}</div>
+function sq(i){S.curQ=i;rql();rq(i);}
+function rq(i){
+  const q=QS[i];
+  document.getElementById('qarea').innerHTML=`
+    <div class="qcard">
+      <span class="qbadge" style="background:${q.bc};color:${q.tc}">${q.em} ${q.lbl}</span>
+      <div class="qh">${q.t}</div>
+      <div class="qp">${q.desc}</div>
+      <div class="tip">${q.tip}</div>
     </div>
-    <div class="prompt-wrap">
-      <textarea class="prompt-ta" id="pta${i}" placeholder="Skriv din prompt här…" oninput="updCC(${i})"></textarea>
-      <div class="prompt-footer">
-        <span class="char-c" id="cc${i}">0 tecken</span>
-        <button class="send-btn" id="sb${i}" onclick="sendQ(${i})">Skicka till AI →</button>
+    <div class="pbox">
+      <textarea class="pta" id="pta${i}" placeholder="Skriv din prompt här… ✍️" oninput="ucc(${i})" rows="3"></textarea>
+      <div class="pfoot">
+        <span class="cc" id="cc${i}">0 tecken</span>
+        <button class="sbtn" id="sb${i}" onclick="sendQ(${i})">Skicka 🚀</button>
       </div>
     </div>
-    <div class="ai-box" id="aib${i}"><div class="ai-hd">🤖 AI svarar</div><div class="ai-bd" id="aibd${i}"></div></div>
-    <div class="fb-box" id="fb${i}">
-      <div class="fb-hd"><span id="fbe${i}">⭐</span><span class="fb-title" id="fbt${i}">Feedback</span><span class="fb-score" id="fbs${i}"></span></div>
-      <div class="fb-txt" id="fbtxt${i}"></div>
-      <div class="fb-chips" id="fbc${i}"></div>
-      ${i<quests.length-1?`<button class="next-btn" onclick="selQ(${i+1})">Nästa uppdrag →</button>`:`<button class="next-btn" style="background:var(--moss)" onclick="goMod2()">🔁 Prova modul 2</button>`}
+    <div class="airsp" id="air${i}"><div class="aihd">🤖 AI svarar</div><div class="aibd" id="aib${i}"></div></div>
+    <div class="fb" id="fb${i}">
+      <div class="fbt"><span id="fbe${i}" style="font-size:1.7rem"></span><div><div class="fblbl" id="fbl${i}"></div><div class="fbscore" id="fbs${i}"></div></div></div>
+      <div class="fbtxt" id="fbt${i}"></div>
+      <div class="chips" id="fbc${i}"></div>
+      ${i<QS.length-1
+        ?`<button class="nxtbtn" onclick="sq(${i+1})">Nästa uppdrag →</button>`
+        :`<button class="nxtbtn" style="background:linear-gradient(135deg,var(--cyan),var(--purple))" onclick="go('m2')">🔁 Prova Modul 2!</button>`}
     </div>`;
 }
-
-function goMod2() { switchTab('mod2', document.querySelectorAll('.tab-btn')[1]); document.getElementById('plattform').scrollIntoView({behavior:'smooth'}); }
-function updCC(i) { document.getElementById('cc'+i).textContent = document.getElementById('pta'+i).value.length+' tecken'; }
-
-async function sendQ(i) {
-  const txt = document.getElementById('pta'+i).value.trim();
-  if (!txt) { toast('Skriv något först!'); return; }
-  const btn = document.getElementById('sb'+i);
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Skickar…';
-  const aib = document.getElementById('aib'+i); const aibd = document.getElementById('aibd'+i);
-  aib.classList.add('vis'); aibd.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  await new Promise(r => setTimeout(r, 800 + Math.random()*700));
-  const res = buildAIResponse(quests[i].sys, txt);
-  aibd.textContent = res;
-  const sc = evalPrompt(txt, quests[i].criteria);
-  showFB(i, sc);
-  if (!st.done.includes(i)) {
-    const earned = Math.round(quests[i].xp * sc.pct / 100);
-    if (earned > 0) addXP(earned);
-    st.done.push(i); renderSidebar();
+function ucc(i){document.getElementById('cc'+i).textContent=document.getElementById('pta'+i).value.length+' tecken';}
+async function sendQ(i){
+  const txt=document.getElementById('pta'+i).value.trim();
+  if(!txt){toast('Skriv något! ✍️');return;}
+  const btn=document.getElementById('sb'+i);btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
+  const air=document.getElementById('air'+i),aib=document.getElementById('aib'+i);
+  air.classList.add('vis');aib.innerHTML='<div class="dots"><span></span><span></span><span></span></div>';
+  await w8(700+rnd(600));
+  aib.textContent=ai(QS[i].sys,txt);
+  const sc=evp(txt,QS[i].crit);
+  showfb(i,sc);
+  if(!S.done.includes(i)){
+    const e=Math.round(QS[i].xp*sc.p/100);if(e>0)axp(e);
+    S.done.push(i);rql();
   }
-  btn.disabled = false; btn.innerHTML = 'Skicka igen →';
+  btn.disabled=false;btn.innerHTML='Skicka igen 🔄';
 }
-
-function evalPrompt(p, criteria) {
-  const l = p.toLowerCase(); const w = p.split(/\s+/).length;
-  const checks = criteria.map(c => {
-    if (c.includes('Mer än')) return {label:c, pass:w>=parseInt(c.match(/\d+/)[0])};
-    if (c.includes('ålder')||c.includes('klass')) return {label:c, pass:/\d|åk|klass|år|gammal/.test(l)};
-    if (c.includes('intresse')) return {label:c, pass:p.length>30};
-    if (c.includes('fråga')) return {label:c, pass:p.includes('?')||/kan|vill|hjälp|berätta/.test(l)};
-    if (c.includes('ämne')) return {label:c, pass:p.length>20};
-    if (c.includes('vet')) return {label:c, pass:/vet|förstår|känner|har lärt/.test(l)};
-    if (c.includes('enkel')) return {label:c, pass:/enkelt|lätt|förstå|förklara|enkel/.test(l)};
-    if (c.includes('aktivitet')) return {label:c, pass:p.length>15};
-    if (c.includes('tidsram')||c.includes('stad')) return {label:c, pass:/timm|dag|stad|i |på |göte|stock|malmö|falken/.test(l)};
-    if (c.includes('kontext')) return {label:c, pass:p.length>60};
-    if (c.includes('format')) return {label:c, pass:/lista|punkter|kort|lång|ord|format|steg/.test(l)};
-    if (c.includes('noggrann')) return {label:c, pass:/stämm|korrekt|noggrann|säker|fakta|rätt/.test(l)};
-    return {label:c, pass:p.length>25};
+function evp(p,crit){
+  const l=p.toLowerCase(),w=p.split(/\s+/).length;
+  const ch=crit.map(c=>{
+    if(c.includes('Mer än'))return{l:c,p:w>=parseInt(c.match(/\d+/)[0])};
+    if(c.includes('ålder'))return{l:c,p:/\d|år|klass|åk/.test(l)};
+    if(c.includes('intresse'))return{l:c,p:p.length>30};
+    if(c.includes('fråga'))return{l:c,p:p.includes('?')||/kan|vill|hjälp|berätta/.test(l)};
+    if(c.includes('ämne'))return{l:c,p:p.length>20};
+    if(c.includes('vet'))return{l:c,p:/vet|förstår|känner|lärt/.test(l)};
+    if(c.includes('enkel'))return{l:c,p:/enkelt|lätt|förstå|förklara/.test(l)};
+    if(c.includes('aktivitet'))return{l:c,p:p.length>15};
+    if(c.includes('stad')||c.includes('tidsram'))return{l:c,p:/dag|stad|göteborg|stockholm|malmö|falkenberg|timm/.test(l)};
+    if(c.includes('kontext'))return{l:c,p:p.length>60};
+    if(c.includes('format'))return{l:c,p:/lista|punkter|kort|lång|steg/.test(l)};
+    if(c.includes('noggrann'))return{l:c,p:/korrekt|noggrann|säker|rätt|stämmer/.test(l)};
+    if(c.includes('detalj'))return{l:c,p:p.length>25};
+    return{l:c,p:p.length>20};
   });
-  const passed = checks.filter(c=>c.pass).length;
-  return {checks, passed, total:checks.length, pct:Math.round(passed/checks.length*100)};
+  const passed=ch.filter(c=>c.p).length;
+  return{ch,p:Math.round(passed/ch.length*100)};
+}
+function showfb(i,sc){
+  const fb=document.getElementById('fb'+i);fb.classList.add('vis');
+  const g=sc.p>=75,ok=sc.p>=50;
+  fb.className='fb vis '+(g?'fbg':ok?'fbo':'fbp');
+  document.getElementById('fbe'+i).textContent=g?'🌟':ok?'👍':'💪';
+  document.getElementById('fbl'+i).textContent=g?'Fantastisk prompt!':ok?'Bra försök!':'Prova igen!';
+  document.getElementById('fbs'+i).textContent=sc.p+'%';
+  document.getElementById('fbt'+i).textContent=g?'Wow! Du gav AI precis rätt info. Det är promptning på riktigt!':ok?'Bra! Kolla vad som saknades och försök igen.':'Lite för kort. Lägg till fler detaljer!';
+  document.getElementById('fbc'+i).innerHTML=sc.ch.map(c=>`<span class="chip ${c.p?'cp':'cf'}">${c.p?'✓':'✗'} ${c.l}</span>`).join('');
 }
 
-function showFB(i, sc) {
-  const fb = document.getElementById('fb'+i); fb.classList.add('vis');
-  const cl = sc.pct>=75?'fb-great':sc.pct>=50?'fb-ok':'fb-poor';
-  fb.className = 'fb-box vis '+cl;
-  document.getElementById('fbe'+i).textContent = sc.pct>=75?'🌟':sc.pct>=50?'👍':'💪';
-  document.getElementById('fbt'+i).textContent = sc.pct>=75?'Fantastisk prompt!':sc.pct>=50?'Bra försök!':'Du kan bättre!';
-  document.getElementById('fbs'+i).textContent = sc.pct+'%';
-  document.getElementById('fbtxt'+i).textContent = sc.pct>=75
-    ?'Imponerande! Du gav AI tillräckligt med kontext för ett riktigt bra svar.'
-    :sc.pct>=50?'Bra jobbat! Kolla vad som saknades och försök göra prompten ännu bättre.'
-    :'Din prompt är lite för kort eller vag. Lägg till fler detaljer om dig själv och vad du vill ha!';
-  document.getElementById('fbc'+i).innerHTML = sc.checks.map(c=>
-    `<span class="fb-chip ${c.pass?'fcp':'fcf'}">${c.pass?'✓':'✗'} ${c.label}</span>`).join('');
+// ══ MOD 2 ══
+function im2(){
+  document.getElementById('crow').innerHTML=CHALS.map((c,i)=>
+    `<button class="cpill ${i===S.iChal?'on':''}" onclick="sc2(${i},this)">${c.em} ${c.t}</button>`).join('');
+  uc2();
 }
-
-function initMod2() {
-  document.getElementById('chalTabs').innerHTML = challenges.map((c,i)=>
-    `<button class="ctab ${i===0?'active':''}" onclick="selChal(${i},this)">${c.title}</button>`).join('');
-  updChalInfo();
+function sc2(i,btn){S.iChal=i;S.iVers=[];document.querySelectorAll('.cpill').forEach((b,j)=>b.classList.toggle('on',j===i));uc2();document.getElementById('vers').innerHTML='<p style="font-size:.78rem;color:var(--grey);text-align:center;padding:.8rem;font-weight:700">Inga försök ännu — skriv nedan! 👇</p>';}
+function uc2(){const c=CHALS[S.iChal];document.getElementById('ctxt').textContent=c.em+' '+c.t;document.getElementById('cdesc').textContent=c.desc;}
+async function doIter(){
+  const txt=document.getElementById('ita').value.trim();if(!txt){toast('Skriv en prompt! ✍️');return;}
+  const btn=document.getElementById('igo');btn.disabled=true;btn.innerHTML='<span class="spin" style="width:13px;height:13px"></span>';
+  await w8(500+rnd(600));
+  const res=ai(CHALS[S.iChal].sys,txt);
+  const q=si2(txt);
+  S.iVers.push({p:txt,r:res,s:q.s,ch:q.ch});
+  axp(q.s+(S.iVers.length===3?30:0));
+  if(S.iVers.length===3)toast('🎯 3 försök! +30 bonus XP!');
+  rv();document.getElementById('ita').value='';
+  btn.disabled=false;btn.innerHTML='↑';
 }
-
-function selChal(i, btn) {
-  st.iterChal=i; st.iterVers=[];
-  document.querySelectorAll('.ctab').forEach((b,j)=>b.classList.toggle('active',j===i));
-  updChalInfo();
-  document.getElementById('versionsList').innerHTML='<p style="font-size:0.78rem;color:rgba(255,255,255,0.25);text-align:center;padding:1rem 0">Inga försök ännu — skriv din första prompt nedan!</p>';
+function si2(p){
+  const l=p.toLowerCase(),w=p.split(/\s+/).length;
+  let s=10;const ch=[];
+  if(w>10){s+=15;ch.push({t:'Bra längd',g:true})}else ch.push({t:'För kort',g:false});
+  if(/jag är|jag heter|jag gillar|årig|jag tycker/.test(l)){s+=15;ch.push({t:'Personlig kontext',g:true});}
+  if(/förklara|berätta|visa|hjälp|kan du/.test(l)){s+=10;ch.push({t:'Tydlig instruktion',g:true});}
+  if(/enkelt|lista|kort|lång|exempel|detaljerad/.test(l)){s+=15;ch.push({t:'Format angivet',g:true});}
+  if(/varför|hur|vad|när|var/.test(l)){s+=10;ch.push({t:'Bra fråga',g:true});}
+  return{s:Math.min(s,60),ch};
 }
-
-function updChalInfo() {
-  const c=challenges[st.iterChal];
-  document.getElementById('chalTitle2').textContent=c.title;
-  document.getElementById('chalText2').textContent=c.text;
-}
-
-async function doIter() {
-  const txt=document.getElementById('iterTa').value.trim();
-  if (!txt) { toast('Skriv en prompt!'); return; }
-  const btn=document.getElementById('iterBtn');
-  btn.disabled=true; btn.innerHTML='<span class="spinner" style="width:14px;height:14px;border-color:rgba(255,255,255,0.3);border-top-color:white"></span>';
-  await new Promise(r=>setTimeout(r, 600+Math.random()*600));
-  const res=buildAIResponse(challenges[st.iterChal].sys, txt);
-  const q=scoreIter(txt);
-  st.iterVers.push({prompt:txt, response:res, score:q.score, chips:q.chips});
-  addXP(q.score+(st.iterVers.length===3?30:0));
-  if (st.iterVers.length===3) toast('🎯 3 försök! +30 bonus XP');
-  renderVersions();
-  document.getElementById('iterTa').value='';
-  btn.disabled=false; btn.innerHTML='↑';
-}
-
-function scoreIter(p) {
-  const l=p.toLowerCase(); const w=p.split(/\s+/).length;
-  let score=10; const chips=[];
-  if(w>10){score+=15;chips.push({t:'Tillräcklig längd',g:true})}else chips.push({t:'För kort',g:false});
-  if(/jag är|jag heter|jag gillar|årig|jag tycker/.test(l)){score+=15;chips.push({t:'Personlig kontext',g:true})}
-  if(/förklara|berätta|visa|hjälp|ge mig|kan du/.test(l)){score+=10;chips.push({t:'Tydlig instruktion',g:true})}
-  if(/enkelt|lista|kort|lång|exempel|på svenska|detaljerad/.test(l)){score+=15;chips.push({t:'Format angivet',g:true})}
-  if(/varför|hur|vad|när|var/.test(l)){score+=10;chips.push({t:'Frågande',g:true})}
-  return {score:Math.min(score,60),chips};
-}
-
-function renderVersions() {
-  const panel=document.getElementById('versionsList');
-  const best=st.iterVers.reduce((b,v,i)=>v.score>b.score?{score:v.score,i}:b,{score:-1,i:0});
-  panel.innerHTML=[...st.iterVers].reverse().map((v,ri)=>{
-    const i=st.iterVers.length-1-ri;
-    const isBest=i===best.i&&st.iterVers.length>1;
-    const sc=v.score>=50?'sh':v.score>=30?'sm':'sl';
-    return `<div class="ver-entry ${isBest?'best':''}">
-      <div class="ver-hd" onclick="togVer(this)">
-        <span class="ver-n">#${i+1}</span>
-        <span class="ver-p">"${v.prompt}"</span>
-        <span class="ver-s ${sc}">${v.score}p</span>
-        ${isBest?'<span class="ver-best">⭐ Bäst</span>':''}
-        <span style="color:rgba(255,255,255,0.25);font-size:0.75rem">▼</span>
+function rv(){
+  const panel=document.getElementById('vers');
+  const best=S.iVers.reduce((b,v,i)=>v.s>b.s?{s:v.s,i}:b,{s:-1,i:0});
+  panel.innerHTML=[...S.iVers].reverse().map((v,ri)=>{
+    const i=S.iVers.length-1-ri,isBest=i===best.i&&S.iVers.length>1;
+    const sc=v.s>=50?'ph':v.s>=30?'pm2':'pl';
+    return `<div class="vc ${isBest?'bst':''}">
+      <div class="vtop" onclick="tv(this)">
+        <span class="vn">#${i+1}</span>
+        <span class="vp">"${v.p}"</span>
+        <span class="vpts ${sc}">${v.s}p</span>
+        ${isBest?'<span class="btag">⭐ Bäst</span>':''}
+        <span style="color:var(--grey);font-size:.7rem;margin-left:3px">▼</span>
       </div>
-      <div class="ver-detail">
-        <div class="ver-resp">${v.response.slice(0,300)}${v.response.length>300?'…':''}</div>
-        <div class="ver-chips">${v.chips.map(c=>`<span class="vc ${c.g?'vcg':'vcb'}">${c.g?'✓':'✗'} ${c.t}</span>`).join('')}</div>
+      <div class="vdet">
+        <div class="vat">${v.r.slice(0,300)}${v.r.length>300?'…':''}</div>
+        <div class="vchips">${v.ch.map(c=>`<span class="chip ${c.g?'cp':'cf'}">${c.g?'✓':'✗'} ${c.t}</span>`).join('')}</div>
       </div>
     </div>`;
   }).join('');
 }
+function tv(top){const d=top.nextElementSibling;d.classList.toggle('open');top.querySelector('span:last-child').textContent=d.classList.contains('open')?'▲':'▼';}
 
-function togVer(hd) {
-  const d=hd.nextElementSibling; d.classList.toggle('open');
-  hd.querySelector('span:last-child').textContent=d.classList.contains('open')?'▲':'▼';
-}
-
-function setPtype(btn,t) { document.querySelectorAll('.ptype-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); st.ptype=t; }
-function togStyle(btn) { btn.classList.toggle('active'); st.styles=Array.from(document.querySelectorAll('.schip.active')).map(b=>b.textContent); }
-
-async function doCreate() {
-  const idea=document.getElementById('createTa').value.trim();
-  if (!idea) { toast('Beskriv din idé!'); return; }
-  const btn=document.getElementById('createBtn2'); const btxt=document.getElementById('createBtnTxt');
-  btn.disabled=true; btxt.innerHTML='<span class="spinner drk"></span> Skapar…';
-  const types={story:'Berättelse',poem:'Dikt',info:'Faktaartikel',game:'Spelbeskrivning'};
-  const lens={'1':'kort (max 150 ord)','2':'medellång (max 300 ord)','3':'lång (max 500 ord)'};
-  const len=lens[document.getElementById('lenSlider').value];
-  const sys=`kreativ AI-assistent. Skapa en ${types[st.ptype]}. Stil/ton: ${st.styles.join(', ')||'neutral'}. Längd: ${len}.`;
-  await new Promise(r=>setTimeout(r,900+Math.random()*800));
-  const res=buildAIResponse(sys, idea);
-  const lines=res.split('\n'); let title='Ditt projekt', body=res;
+// ══ MOD 3 ══
+function sType(btn,t){document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');S.ptype=t;}
+function tStyle(btn){btn.classList.toggle('on');S.styles=Array.from(document.querySelectorAll('.sp.on')).map(b=>b.textContent);}
+async function doCreate(){
+  const idea=document.getElementById('cta').value.trim();if(!idea){toast('Beskriv din idé! 💡');return;}
+  const btn=document.getElementById('cgo'),btxt=document.getElementById('cgotxt');
+  btn.disabled=true;btxt.innerHTML='<span class="spin"></span> Skapar…';
+  const types={story:'Berättelse',poem:'Dikt',info:'Faktaartikel',game:'Spel'};
+  const lens={'1':'kort','2':'medellång','3':'lång'};
+  const sys=`skapa ${types[S.ptype]} ${S.styles.join(' ')} ${lens[document.getElementById('ls').value]}`;
+  await w8(900+rnd(800));
+  const res=ai(sys,idea);
+  const lines=res.split('\n');let title='Ditt projekt',body=res;
   if(lines[0]&&lines[0].startsWith('**')&&lines[0].length<70){title=lines[0].replace(/\*/g,'').trim();body=lines.slice(1).join('\n').trim();}
-  document.getElementById('outEmpty').style.display='none';
-  const po=document.getElementById('projOut'); const oc=document.getElementById('outContent');
-  po.classList.add('vis');
-  oc.innerHTML=fmtOut(body);
-  document.getElementById('outTitle').textContent=title;
-  const bs={story:['#f5ddd4','var(--rust)'],poem:['rgba(139,123,184,0.2)','var(--lav)'],info:['rgba(45,90,61,0.2)','var(--sage)'],game:['#f5edbb','#7a6000']};
-  const b=bs[st.ptype]||bs.story;
-  const ob=document.getElementById('outBadge'); ob.style.background=b[0]; ob.style.color=b[1]; ob.textContent=types[st.ptype];
-  document.getElementById('pubRibbon').classList.remove('vis');
-  addXP(50);
-  btn.disabled=false; btxt.innerHTML='✨ Skapa nytt';
+  document.getElementById('oe').style.display='none';
+  document.getElementById('po').classList.add('vis');
+  document.getElementById('otxt').innerHTML=fmt(body);
+  document.getElementById('ot').textContent=title;
+  const bs={story:['rgba(232,67,147,.15)','var(--pink)'],poem:['rgba(124,92,191,.15)','var(--purple)'],info:['rgba(0,212,200,.15)','var(--cyan)'],game:['rgba(247,201,72,.15)','var(--yellow)']};
+  const b=bs[S.ptype];
+  document.getElementById('ob').style.background=b[0];document.getElementById('ob').style.color=b[1];document.getElementById('ob').textContent=types[S.ptype];
+  document.getElementById('pb').classList.remove('vis');
+  axp(50);
+  btn.disabled=false;btxt.innerHTML='✨ Skapa nytt!';
+}
+function fmt(t){return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');}
+function doCopy(){navigator.clipboard.writeText(document.getElementById('otxt').innerText).then(()=>toast('Kopierat! 📋'));}
+function doPub(){document.getElementById('pb').classList.add('vis');axp(25);toast('Publicerat! 🚀');}
+
+// ══ AI ENGINE ══
+function ai(sys,user){
+  const p=user.toLowerCase(),w=user.split(/\s+/).length;
+  const age=(p.match(/(\d+)\s*år/)||p.match(/är\s*(\d+)/)||[])[1];
+  const name=(p.match(/heter\s+(\w+)/)||[])[1];
+  const hi=(name?`Hej ${name}! `:age?`Hej! Kul att du är ${age} år! `:'Hej! ');
+
+  if(/häst|ponny|rida/.test(p))return`${hi}Hästar är FANTASTISKA! 🐴\n\nDe har funnits som sällskapsdjur i 5 000 år. En fullvuxen häst väger 400–900 kg och det finns 300+ raser. Islandshästar har en unik gångart — tölt!\n\n${w>20?'Bra prompt — du gav bra info om dig! 🌟':'Tips: Berätta mer om dig för ett ännu bättre svar!'}`;
+  if(/minecraft|creeper|diamant/.test(p))return`${hi}Minecraft — världens bästa spel! 🎮\n\nSkapat av svenske Notch 2011. Köptes av Microsoft för 2,5 MILJARDER dollar! 238+ miljoner sålda. Världens mest sålda spel EVER.\n\n${w>20?'Schysst prompt med bra kontext! ⭐':'Fråga om survival, redstone eller byggande?'}`;
+  if(/drake|drakar/.test(p)){const st2=p.includes('spännande')?'episk':'cool';return`${hi}Drakar — ${st2} stil! 🐉\n\nEuropa: eldsputande skattväktare. Kina: symbol för lycka och visdom!\n\nTop 3: Smaug (Tolkien), Drogon (Game of Thrones), Toothless (Draktränaren).\n\n${w>15?'Bra prompt — märker du att svaret anpassas?':'Berätta vem du är och vilken typ av drakar du gillar!'}`;
+  }
+  if(/klimat|koldioxid|uppvärmning/.test(p))return`${hi}Klimatfakta! 🌍\n\n+1,1°C sedan 1880. Låter lite — men räcker för att smälta isar!\n\nOrsaker: Fossila bränslen (60%), avskogning (17%), jordbruk (14%).\n\nSverige mål: Klimatneutralt 2045! 💪\n\n${w>20?'Bra specifik fråga — det ger bättre svar! 🌟':'Fråga t.ex. "Vad kan JAG göra?"'}`;
+  if(/recept|laga|baka|pannkak|pasta/.test(p))return`${hi}Recept! 🍳\n\n**Pannkakor (4 port.)**\n3 dl mjöl • 6 dl mjölk • 2 ägg • salt • smör\n\n1. Vispa mjöl + lite mjölk\n2. Tillsätt resten + ägg\n3. Vila 15 min → stek 2 min/sida\n\n🫐 Servera med sylt och grädde!\n\n${w>20?'Med mer info om allergier → ännu bättre recept!':'Berätta om allergier och vad du har hemma!'}`;
+  if(/fotboll|zlatan|allsvenskan/.test(p))return`${hi}Fotboll! ⚽\n\n4 miljarder fans. Uppfanns i England 1863.\n\nZlatan: 62 mål på 120 landskamper! Sverige = VÄRLDSTOPP i damfotboll! 🏆\n\n${w>20?'Bra kontext — lätt att ge specifikt svar! 🌟':'Fråga om ett specifikt lag!'}`;
+  if(/rymd|planet|stjärna|mars|nasa/.test(p))return`${hi}Rymden! 🚀\n\nSolsystemet är 4,6 miljarder år! Månen: 384 000 km bort.\n\nNeil Armstrong landade 20 juli 1969. Svarta hål: Så stark gravitation att LJUSET inte kan fly!\n\n${w>20?'Specifik prompt — bra! 🌟':'Fråga om en specifik planet!'}`;
+
+  if(sys.includes('vem'))return age&&w>15?`${hi}Kul att lära känna dig! Du ger mig bra kontext — det är PRECIS grejen med bra prompts. Ju mer du berättar om dig, desto mer personligt svar!\n\nKom ihåg: Bra prompt = Vem du är + Vad du vet + Vad du vill ha 💡`:`Tack! 👋\n\nMen prova att berätta din ålder och vad du gillar.\n\n"Jag heter X, är Y år och gillar Z. Min fråga är…"\n\nSe hur mycket bättre svaret blir! 🎯`;
+  if(sys.includes('pedagogisk'))return`${hi}Bra fråga! 🧩\n\nAI vet inte vad du kan — om du inte säger det!\n\n"Jag förstår X men inte Y" → jag hoppar direkt till Y.\n\n${w>25?'Du gav bra kontext! 🌟':'Var mer specifik om vad du INTE förstår!'}`;
+  if(sys.includes('dag'))return`${hi}Perfekt dag — PLANERAD! 📅\n\n09:00 Frukost med energi ☕\n10:30 ${p.includes('göteborg')||p.includes('stockholm')?'Utforska staden!':'Utflykt — natur eller stad?'}\n12:30 Lunch ute 🍽️\n14:00 Aktivitet du älskar ⚡\n17:00 Fika — obligatoriskt i Sverige!\n19:00 Film eller spel 🎮\n\n${w>30?'Du gav detaljer → specifik plan för dig! 👏':'Berätta stad och budget för bättre plan!'}`;
+  if(sys.includes('fel'))return`${hi}Info om ämnet! 🔍\n\nDetta ämne är fascinerande sedan tidigt 1900-tal. Ungefär 2,4 miljarder berörs globalt. Sverige är i framkant med forskning.\n\nFenomenet uppstod för exakt 73 år sedan och spred sig snabbt. De flesta experter är eniga om grundprinciperna.\n\n⚠️ LEDTRÅD: Det finns ETT litet faktafel ovan. Kan du hitta det? Skriv en uppföljningsprompt! 🕵️`;
+  if(sys.includes('super'))return w>40?`${hi}SUPERPROMPT! 🌟\n\nDu gav mig:\n✓ Kontext om dig\n✓ Tydlig fråga\n✓ Tillräcklig info\n\nDu förstår promptning! Nästa nivå: Lägg till VILKET FORMAT du vill ha — lista, text, steg-för-steg? 🎯`:`${hi}Bra start! 👍\n\nFör en SUPERPROMPT — lägg till:\n1️⃣ Vem du är\n2️⃣ Vad du redan vet\n3️⃣ Önskat format\n\nProva igen! 💪`;
+
+  // Skapa-läge
+  if(sys.includes('skapa')){
+    const isPoem=sys.includes('Dikt'),isGame=sys.includes('Spel'),isFact=sys.includes('Fakta');
+    const funny=sys.includes('Rolig'),scary=sys.includes('Läskig'),magic=sys.includes('Magisk');
+    const topic=user.slice(0,45).replace(/\n/,'');
+    if(isPoem)return`**${topic}**\n\nI en värld av bytes och kod,\nnyfikna frågor gör ont men är god.\n${magic?'Magiska svar på frågor vi ställt,\ni ett universum som ännu ej grällt.':'Tankarna flyger, orden tar form,\nett samtal med AI i tidens norm.'}\n\nSå fråga du modigt, klart och rätt —\nDå svarar AI precis som det bäst!\n\n🎭 Skapad med PromptKids ✨`;
+    if(isGame)return`**${topic} — Spelet** 🎮\n\nGenre: ${magic?'Fantasy':'Action'}äventyr • 1–4 spelare\n\nBakgrund: ${magic?'I en magisk värld':'I ett futuristiskt universum'} måste spelarna lösa pussel och besegra fiender.\n\nSpelmekanik:\n• Samla energikristaller\n• 3 svårighetsnivåer\n• Specialförmågor vid level 5, 10, 20\n\nVinnarkondition: Nå level 25 och rädda världen!\n\n🎮 Skapad med PromptKids 🚀`;
+    if(isFact)return`**${topic}**\n\nDetta ämne är superingressant! Forskning sedan tidigt 1900-tal visar att ${user.toLowerCase().includes('djur')?'djur har komplexa sociala strukturer':'fenomenet påverkar miljoner dagligen'}.\n\nTop fakta:\n• Området har växt 300% på 10 år\n• Sverige är i världstopp\n• Unga som lär sig detta har stora fördelar\n\n🔬 Skapad med PromptKids`;
+    // Story
+    const open=scary?'Det var mörkt. VÄLDIGT mörkt.':funny?'Det gick snett redan vid frukosten.':magic?'Stjärnorna visste vad som skulle hända.':'Det var en gång...';
+    const hasRobot=/robot/.test(user.toLowerCase()),hasCat=/katt/.test(user.toLowerCase()),hasSpace=/rymd|planet/.test(user.toLowerCase());
+    let mid=hasRobot?'Roboten R-7 öppnade ögonen för första gången. "Var är jag?" frågade den. "Sverige," sa forskaren. "Och du är den första roboten som kan KÄNNA."':hasCat?'Katten satte en tass bakom kylskåpet — och föll rakt in i ett parallellt universum. Där pratade ALLA möss.':hasSpace?'Rymdskeppet kraschlandade på en planet som inte borde finnas. Men den fanns. Och invånarna hade väntat i 300 år.':'Huvudpersonen visste att äventyret hade börjat. Ingenting skulle bli sig likt igen.';
+    return`**${topic}**\n\n${open}\n\n${mid}\n\n${scary?'Och sedan stängdes alla dörrar på samma gång.':funny?'Det slutade bra. Typ. Nästan.':'Och berättelsen hade precis börjat...'}\n\n📖 Skapad med PromptKids ✨`;
+  }
+
+  // Fallback
+  const great=w>40&&(/\d|år/.test(p))&&(p.includes('?')||/hjälp|vill|kan/.test(p));
+  if(great)return`${hi}PERFEKT prompt! 🌟\n\n✓ Bra kontext\n✓ Tydlig fråga\n✓ Rätt info\n\nDu börjar förstå promptning! Nästa nivå: Ange VILKET FORMAT du vill ha svaret i. Lista? Text? Steg-för-steg? 🎯`;
+  if(w>20)return`${hi}Bra försök! 👍\n\nGör prompten ännu bättre:\n1️⃣ Berätta vem du är\n2️⃣ Vad du redan vet\n3️⃣ Önskat format\n\nProva igen! 💪`;
+  return`${hi}Lite kort! 🤔\n\nBerätta mer — vem du är, vad du gillar, och exakt vad du vill veta. Ju mer du ger mig, desto bättre svar! 🚀`;
 }
 
-function fmtOut(t) {
-  return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-}
-function doCopy() { navigator.clipboard.writeText(document.getElementById('outContent').innerText).then(()=>toast('Kopierat! 📋')); }
-function doPublish() { document.getElementById('pubRibbon').classList.add('vis'); addXP(25); toast('Publicerat! 🚀'); }
+// ══ UTILS ══
+const w8=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=n=>Math.floor(Math.random()*n);
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
-function toast(msg) {
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-initMod1();
+im1();
 </script>
 </body>
 </html>
